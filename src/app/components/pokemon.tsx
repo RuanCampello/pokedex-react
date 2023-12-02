@@ -3,7 +3,6 @@ import PokemonTop from "./pokemonTop"
 interface PokemonProps {
   name: string
 }
-
 export default function Pokemon({name}: PokemonProps) {
   const [colour, setColour] = useState(String)
   async function getPokemon() {

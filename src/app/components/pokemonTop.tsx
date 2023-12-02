@@ -1,5 +1,4 @@
 'use client'
-
 import { useEffect, useState } from "react"
 import { Pokemon } from "./pokemonType"
 
@@ -11,7 +10,7 @@ const typeColors: { [key: string]: string} = {
   'normal': '#A8A77A',
   'fire': '#EE8130',
   'water': '#6390F0',
-  'electric': '#f7b801',
+  'electric': '#ff9e00',
   'grass': '#7AC74C',
   'ice': '#96D9D6',
   'fighting': '#C22E28',
@@ -49,7 +48,7 @@ export default function PokemonTop({colour, name}: PokemonTopProps) {
         <div className='items-center justify-center lowercase inline space-x-2'>
             {pokemon?.types.map((type: any) => {
               return (
-                <span className={`bg-platinum px-2 py-1 h-7 rounded-2xl font-medium text-xs`} style={{color: stringColour}}>{type['type']['name']}</span>
+                <span id={type['type']['name']} className={`bg-platinum px-2 py-1 h-7 rounded-2xl font-medium text-xs`} style={{color: stringColour}}>{type['type']['name']}</span>
               )
             })}
         </div>
