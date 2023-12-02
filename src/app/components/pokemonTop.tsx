@@ -28,12 +28,12 @@ const typeColors: { [key: string]: string} = {
 }
 export default function PokemonTop({colour, name}: PokemonTopProps) {
   const [pokemon, setPokemon] = useState<Pokemon>()
-  async function getPokemon() {
-    const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${name}`)
-    const data = await response.json()
-    setPokemon(data)
-  }
   useEffect(() => {
+    async function getPokemon() {
+      const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${name}`)
+      const data = await response.json()
+      setPokemon(data)
+    }
     getPokemon()
   }, [name])
   
@@ -48,7 +48,7 @@ export default function PokemonTop({colour, name}: PokemonTopProps) {
         <div className='items-center justify-center lowercase inline space-x-2'>
             {pokemon?.types.map((type: any) => {
               return (
-                <span id={type['type']['name']} className={`bg-platinum px-2 py-1 h-7 rounded-2xl font-medium text-xs`} style={{color: stringColour}}>{type['type']['name']}</span>
+                <span key={type['type']['name']} className={`bg-platinum px-2 py-1 h-7 rounded-2xl font-medium text-xs`} style={{color: stringColour}}>{type['type']['name']}</span>
               )
             })}
         </div>

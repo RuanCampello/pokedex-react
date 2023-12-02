@@ -5,12 +5,13 @@ interface PokemonProps {
 }
 export default function Pokemon({name}: PokemonProps) {
   const [colour, setColour] = useState(String)
-  async function getPokemon() {
-    const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${name}`)
-    const data = await response.json()
-    setColour(data?.types[0].type.name)    
-  }
+  
   useEffect(() => {
+    async function getPokemon() {
+      const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${name}`)
+      const data = await response.json()
+      setColour(data?.types[0].type.name)    
+    }
     getPokemon()
   }, [name])
   return (
