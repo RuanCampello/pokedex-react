@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react"
 import PokemonTop from "./pokemonTop"
+import PokemonBottom from "./pokemonBottom"
 interface PokemonProps {
   name: string
 }
@@ -17,8 +18,7 @@ export default function Pokemon({name}: PokemonProps) {
   return (
     <main className='sm:w-[360px] sm:h-[750px] w-screen h-screen'>
       <PokemonTop colour={colour} name={name}/>
-      <div className='bg-platinum h-2/3 sm:rounded-b-2xl'>
-      </div>
+      <PokemonBottom colour={colour} name={name}/>
     </main>
   )
 }

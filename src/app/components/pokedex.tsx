@@ -9,7 +9,7 @@ export default function Pokedex() {
   const [query, setQuery] = useState(String)
   function handleSubmit(e: any) {
     e.preventDefault()
-    setPokemonKey(query)
+    setPokemonKey(query.toLowerCase().trim())
   }
   return (
   <RecoilRoot>

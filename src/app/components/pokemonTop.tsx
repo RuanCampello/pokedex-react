@@ -6,7 +6,7 @@ interface PokemonTopProps {
   colour: string
   name: string
 }
-const typeColors: { [key: string]: string} = {
+export const typeColors: { [key: string]: string} = {
   'normal': '#A8A77A',
   'fire': '#EE8130',
   'water': '#6390F0',
@@ -52,7 +52,7 @@ export default function PokemonTop({colour, name}: PokemonTopProps) {
             })}
         </div>
       </div>
-      <img className='absolute self-center sm:h-44 h-60 sm:top-60 top-40' src={pokemon?.sprites.versions["generation-v"]["black-white"]?.animated?.front_default} alt={`${pokemon?.species.name}'s sprite`} />
+      <img className='absolute self-center sm:h-44 h-60 sm:top-48 top-32 z-10' src={pokemon?.sprites.versions["generation-v"]["black-white"]?.animated?.front_default} alt={`${pokemon?.species.name}'s sprite`} />
     </div>
   )
 }
