@@ -36,24 +36,23 @@ export default function PokemonTop({colour, name}: PokemonTopProps) {
     }
     getPokemon()
   }, [name])
-  
   const stringColour = typeColors[colour] || typeColors['normal']
   return (
     <div className={`sm:rounded-t-2xl p-8 h-1/3 flex flex-col`} style={{background: stringColour}}>
       <div className='flex flex-col gap-2'>
         <div className='flex items-baseline justify-between'>
-          <h1 className='text-5xl font-semibold capitalize'>{pokemon?.species.name}</h1>
-          <h2 className='text-lg'>#{pokemon?.id}</h2>
+          <h1 className='sm:text-5xl text-6xl font-semibold capitalize'>{pokemon?.species.name}</h1>
+          <h2 className='sm:text-lg text-2xl'>#{pokemon?.id}</h2>
         </div>
         <div className='items-center justify-center lowercase inline space-x-2'>
             {pokemon?.types.map((type: any) => {
               return (
-                <span key={type['type']['name']} className={`bg-platinum px-2 py-1 h-7 rounded-2xl font-medium text-xs`} style={{color: stringColour}}>{type['type']['name']}</span>
+                <span key={type['type']['name']} className={`bg-platinum px-2 py-1 rounded-2xl font-medium sm:text-xs text-lg`} style={{color: stringColour}}>{type['type']['name']}</span>
               )
             })}
         </div>
       </div>
-      <img className='absolute self-center h-44 top-60' src={pokemon?.sprites.versions["generation-v"]["black-white"]?.animated?.front_default} alt={`${pokemon?.species.name}'s sprite`} />
+      <img className='absolute self-center sm:h-44 h-60 sm:top-60 top-40' src={pokemon?.sprites.versions["generation-v"]["black-white"]?.animated?.front_default} alt={`${pokemon?.species.name}'s sprite`} />
     </div>
   )
 }

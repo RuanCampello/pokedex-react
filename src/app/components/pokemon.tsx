@@ -5,7 +5,7 @@ interface PokemonProps {
 }
 export default function Pokemon({name}: PokemonProps) {
   const [colour, setColour] = useState(String)
-  
+
   useEffect(() => {
     async function getPokemon() {
       const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${name}`)
@@ -15,7 +15,7 @@ export default function Pokemon({name}: PokemonProps) {
     getPokemon()
   }, [name])
   return (
-    <main className='sm:w-[360px] sm:h-[800px] w-screen h-screen'>
+    <main className='sm:w-[360px] sm:h-[750px] w-screen h-screen'>
       <PokemonTop colour={colour} name={name}/>
       <div className='bg-platinum h-2/3 sm:rounded-b-2xl'>
       </div>
