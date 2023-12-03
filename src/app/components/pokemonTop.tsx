@@ -1,7 +1,8 @@
 'use client'
 import { useEffect, useState } from "react"
 import { Pokemon } from "./pokemonType"
-
+import pokeball from '../img/pokeball.png'
+import Image from "next/image"
 interface PokemonTopProps {
   colour: string
   name: string
@@ -36,6 +37,7 @@ export default function PokemonTop({colour, name}: PokemonTopProps) {
     }
     getPokemon()
   }, [name])
+  const imageUrl = pokemon?.sprites.versions["generation-v"]["black-white"]?.animated?.front_default || pokemon?.sprites.front_default
   const stringColour = typeColors[colour] || typeColors['normal']
   return (
     <div className={`sm:rounded-t-2xl p-8 h-1/3 flex flex-col`} style={{background: stringColour}}>
@@ -52,7 +54,14 @@ export default function PokemonTop({colour, name}: PokemonTopProps) {
             })}
         </div>
       </div>
-      <img className='absolute self-center sm:h-44 h-60 sm:top-48 top-32 z-10' src={pokemon?.sprites.versions["generation-v"]["black-white"]?.animated?.front_default || pokemon?.sprites.front_default} alt={`${pokemon?.species.name}'s sprite`} />
+      <Image alt='pokeball' className='rotate-45 h-44 w-44 sm:h-32 sm:w-32 z-10 self-end opacity-40' src={pokeball}/>
+      <Image
+      width={12}
+      height={12}
+      className='absolute self-center sm:h-44 h-60 w-auto sm:top-48 top-32 z-10' 
+      alt={`${pokemon?.species.name}'s sprite`} 
+      src={imageUrl || ''}
+      />
     </div>
   )
 }

@@ -19,42 +19,42 @@ export default function About({description, height, weight, abilities, genderRat
   
   return (
     <div className='w-full text-slate-500'>
-      <p className='text-[15px] text-justify italic'>
+      <p className='sm:text-[15px] text-lg text-justify italic'>
         {sanitizeAndCapitalizeSentences(description)}
       </p>
-      <div className='grid grid-cols-3 mt-8'>
+      <div className='grid grid-cols-2 sm:grid-cols-3 mt-8 sm:text-base text-lg'>
         <div className='space-y-4'>
           <p>Height</p>
           <p>Weight</p>
           <p>Abilities</p>
         </div>
-        <div className='text-slate-800 space-y-4 col-span-2'>
-          <div className='gap-2 flex'>
+        <div className='text-slate-800 space-y-4 sm:col-span-2'>
+          <div className='gap-2 flex sm:font-normal font-medium'>
             <span>{displayedHeight}</span>
             <span className='text-slate-500'>({convertMetersToFeetAndInches(height/10)})</span>
           </div>
-          <div className='gap-2 flex'>
+          <div className='gap-2 flex sm:font-normal font-medium'>
             <span>{weight/10} kg</span>
             <span className='text-slate-500'>({convertKgToPounds(weight/10)})</span>
           </div>
           <ul>
             {abilities.map((ability, index) => (
-              <div className='flex gap-2 items-center' key={index}>
+              <div className='flex gap-2 items-center sm:font-normal font-medium' key={index}>
                 {ability.name}
                 {ability.isHidden ? 
-                  <span className='text-xs bg-slate-800 text-platinum px-2 p-1 rounded-full font-medium'>hidden</span>
+                  <span className='text-xs bg-slate-800 text-platinum px-2 p-1 rounded-full font-bold'>hidden</span>
                 : null}
               </div>
             ))}
           </ul>
         </div>
       </div>
-      <div className='space-y-4'>
+      <div className='space-y-4 sm:text-base text-lg'>
         <h1 className='text-lg text-slate-800 font-medium mt-6'>Breeding</h1>
-        <div className='text-slate-800 grid grid-cols-3'>
+        <div className='text-slate-800 grid sm:grid-cols-3 grid-cols-2'>
           <h2 className='text-slate-500'>Gender</h2>
           {genderRatio > -1 ? 
-          <div className='col-span-2 grid grid-cols-2'>
+          <div className='sm:col-span-2 grid grid-cols-2 sm:font-normal font-medium'>
             <span className='flex gap-2 items-center'>
               <GenderFemale color='#F95587' size={20} weight='bold'/> {femaleRatio}%
             </span>
@@ -62,11 +62,11 @@ export default function About({description, height, weight, abilities, genderRat
               <GenderMale color='#6390F0' size={20} weight='bold'/> {100-femaleRatio}% 
             </span>
           </div> : 
-          <span className='text-slate-800'>unknown</span>}
+          <span className='text-slate-800 sm:font-normal font-medium'>unknown</span>}
         </div>
-        <div className='grid grid-cols-3'>
-          <h2 className='tetxt-slate-800'>Egg groups</h2>
-          <div className='col-span-2 flex gap-2 text-slate-800'>
+        <div className='grid sm:grid-cols-3 grid-cols-2'>
+          <h2 className='text-slate-500'>Egg groups</h2>
+          <div className='sm:col-span-2 flex gap-2 text-slate-800 sm:font-normal font-medium'>
             {eggGroups.join(', ')}
           </div>
         </div>
