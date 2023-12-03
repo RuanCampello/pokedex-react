@@ -52,7 +52,7 @@ export default function PokemonTop({colour, name}: PokemonTopProps) {
             })}
         </div>
       </div>
-      <img className='absolute self-center sm:h-44 h-60 sm:top-48 top-32 z-10' src={pokemon?.sprites.versions["generation-v"]["black-white"]?.animated?.front_default} alt={`${pokemon?.species.name}'s sprite`} />
+      <img className='absolute self-center sm:h-44 h-60 sm:top-48 top-32 z-10' src={pokemon?.sprites.versions["generation-v"]["black-white"]?.animated?.front_default || pokemon?.sprites.front_default} alt={`${pokemon?.species.name}'s sprite`} />
     </div>
   )
 }

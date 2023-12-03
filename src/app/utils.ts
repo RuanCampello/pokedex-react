@@ -27,5 +27,5 @@ export function convertMetersToFeetAndInches(meters: number): string {
 export function convertKgToPounds(kg: number): string {
   const poundsPerKg = 2.20462; // 1 kilogram is approximately 2.20462 pounds
   const pounds = kg * poundsPerKg
-  return `${pounds.toFixed(2)} lbs`;
+  return `${pounds.toFixed(1)} lbs`;
 }
