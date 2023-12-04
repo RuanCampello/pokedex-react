@@ -26,7 +26,14 @@ type GenerationSprites = {
 type Versions = {
   'generation-v': GenerationSprites
 }
-
+export interface Stat {
+  base_stat: number
+  effort: number
+  stat: {
+    name: string
+    url: string
+  }
+}
 export type Pokemon = {
   id: number
   name: string

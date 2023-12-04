@@ -7,7 +7,7 @@ interface PokemonTopProps {
   colour: string
   name: string
 }
-export const typeColors: { [key: string]: string} = {
+export const typeColours: { [key: string]: string} = {
   'normal': '#A8A77A',
   'fire': '#EE8130',
   'water': '#6390F0',
@@ -38,7 +38,7 @@ export default function PokemonTop({colour, name}: PokemonTopProps) {
     getPokemon()
   }, [name])
   const imageUrl = pokemon?.sprites.versions["generation-v"]["black-white"]?.animated?.front_default || pokemon?.sprites.front_default
-  const stringColour = typeColors[colour] || typeColors['normal']
+  const stringColour = typeColours[colour] || typeColours['normal']
   return (
     <div className={`sm:rounded-t-2xl p-8 h-1/3 flex flex-col`} style={{background: stringColour}}>
       <div className='flex flex-col gap-2'>

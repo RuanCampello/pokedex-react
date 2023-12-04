@@ -9,7 +9,9 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        'platinum': '#D9D9D9'
+        'platinum': '#D9D9D9',
+        'silver': '#CBCDCB',
+        'ash-gray': '#BCC0BC'
       }
     },
   },

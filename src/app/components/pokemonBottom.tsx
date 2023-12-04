@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react'
-import { typeColors } from './pokemonTop'
+import { typeColours } from './pokemonTop'
 import { Pokemon } from './pokemonType'
 import PokemonPageButton from './pokemonPageButton'
 import { useRecoilState } from 'recoil'
 import { view } from '@/atoms/view'
 import About from './views/about'
+import BaseStats from './views/baseStats'
 
 interface PokemonBottomProps {
   colour: string
@@ -36,12 +37,14 @@ interface PokemonSpecies {
 export default function PokemonBottom({colour, name}: PokemonBottomProps) {
   const [currentView, setView] = useRecoilState(view)
   const [pokemon, setPokemon] = useState<Pokemon>()
+  const [pokemonStats, setPokemonStats] = useState([])
   const [pokemonSpecies, setPokemonSpecies] = useState<PokemonSpecies | null>(null)
   useEffect(() => {
     async function getPokemon() {
       const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${name}`)
       const data = await response.json()
       setPokemon(data)
+      setPokemonStats(data.stats)
     }
     async function getPokemonSpecies(id: number) {
       const response = await fetch(`https://pokeapi.co/api/v2/pokemon-species/${id}`)
@@ -51,7 +54,7 @@ export default function PokemonBottom({colour, name}: PokemonBottomProps) {
     getPokemon()
     getPokemonSpecies(pokemon?.id || 1)
   }, [name, pokemon?.id])
-  const stringColour = typeColors[colour] || typeColors['normal']
+  const stringColour = typeColours[colour] || typeColours['normal']
   const engFlavorText = pokemonSpecies?.flavor_text_entries.find((entry) => entry.language.name === 'en')
   return (
     <div className='relative h-2/3 bg-platinum overflow-scroll rounded-b-2xl'>
@@ -65,8 +68,8 @@ export default function PokemonBottom({colour, name}: PokemonBottomProps) {
         {currentView === 'about' && <About description={engFlavorText?.flavor_text || ''} height={pokemon?.height || 0} weight={pokemon?.weight || 0} genderRatio={pokemonSpecies?.gender_rate || 0} eggGroups={(pokemonSpecies?.egg_groups || []).map((eggGroup) => eggGroup.name)} abilities={pokemon?.abilities?.map((ability) => ({
         name: ability.ability.name,
         isHidden: ability.is_hidden,
-      })) || []} 
-      />}
+      })) || []} />}
+        {currentView === 'stats' && <BaseStats stats={pokemonStats} colour={stringColour}/>}
       </div>
     </div>
   )

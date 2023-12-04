@@ -1,5 +1,5 @@
 import { convertKgToPounds, convertMetersToFeetAndInches, sanitizeAndCapitalizeSentences } from '@/app/utils'
-import { GenderFemale, GenderMale } from '@phosphor-icons/react'
+import { GenderFemale, GenderMale, Quotes } from '@phosphor-icons/react'
 
 interface AboutProps {
   description: string
@@ -19,9 +19,8 @@ export default function About({description, height, weight, abilities, genderRat
   
   return (
     <div className='w-full text-slate-500'>
-      <p className='sm:text-[15px] text-lg text-justify italic'>
-        {sanitizeAndCapitalizeSentences(description)}
-      </p>
+      <p className='sm:text-[15px] leading-5 text-lg text-justify italic'>
+        {sanitizeAndCapitalizeSentences(description)}</p>
       <div className='grid grid-cols-2 sm:grid-cols-3 mt-8 sm:text-base text-lg'>
         <div className='space-y-4'>
           <p>Height</p>

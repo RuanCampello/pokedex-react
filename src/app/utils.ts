@@ -29,3 +29,11 @@ export function convertKgToPounds(kg: number): string {
   const pounds = kg * poundsPerKg
   return `${pounds.toFixed(1)} lbs`;
 }
+export function transformStatName(originalName: string): string {
+  switch (originalName.toLowerCase()) {
+    case "hp": return "HP"
+    case "special-attack": return "Sp. Atk"
+    case "special-defense": return "Sp. Def"
+    default: return originalName
+  }
+}
