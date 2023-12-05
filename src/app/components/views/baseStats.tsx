@@ -10,7 +10,7 @@ interface BaseStatsProps {
 export default function BaseStats({stats, colour}: BaseStatsProps) {
   let total = 0
   return (
-    <div className='text-slate-800 sm:text-base text-lg'>
+    <div className='sm:text-base text-lg'>
         {
           stats.map((stat, i) => {
             total += stat.base_stat 

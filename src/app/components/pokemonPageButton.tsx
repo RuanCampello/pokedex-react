@@ -9,7 +9,7 @@ interface PageButtonProps {
 export default function PokemonPageButton({text, pageView}: PageButtonProps) {
   const [currentView, setView] = useRecoilState(view)
   return (
-    <button className={`pb-4 px-2 sm:border-b-2 border-b-4 mb-4 ${currentView === pageView? 'border-slate-800' : 'border-transparent'}`} onClick={() => setView(pageView)}>
+    <button className={`pb-4 px-2 sm:border-b-2 border-b-4 mb-4 ${currentView === pageView? 'border-slate-800' : 'border-transparent text-slate-500'}`} onClick={() => setView(pageView)}>
       {text}
     </button>
   )
