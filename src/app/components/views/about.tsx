@@ -15,7 +15,6 @@ export default function About({description, height, weight, abilities, genderRat
   if(height >= 10) displayedHeight = `${height/10} m`
   else displayedHeight = `${height*10} cm`
   let femaleRatio = (genderRatio/8)*100
-  console.log(eggGroups);
   
   return (
     <div className='w-full text-slate-500'>
