@@ -69,7 +69,7 @@ export default function PokemonBottom({colour, name}: PokemonBottomProps) {
     getPokemon()
     getPokemonSpecies(pokemon?.id || 1)
     getEvoChain()
-  }, [name, pokemon?.id])
+  }, [name, pokemon?.id, pokemonSpecies?.evolution_chain.url])
   const stringColour = typeColours[colour] || typeColours['normal']
   const engFlavorText = pokemonSpecies?.flavor_text_entries.find((entry) => entry.language.name === 'en')
   return (
