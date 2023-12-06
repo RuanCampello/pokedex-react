@@ -71,8 +71,12 @@ export default function Evolution({evolutionData}: EvolutionProps) {
   console.log(allEvolutions)
   return (
     <div>
-      {allEvolutions.map(({name, url}) => {
-        return <li>{name} : {url}</li>
+      {allEvolutions.map(({name, url}, i) => {
+        return (
+          <div key={i}>
+            {name}
+          </div>
+        )
       })}
     </div>
   )
