@@ -37,6 +37,13 @@ export interface Stat {
 export type Pokemon = {
   id: number
   name: string
+  names: {
+    language: {
+      name: string
+      url: string
+    }
+    name: string
+  }[]
   base_experience: number
   height: number
   weight: number

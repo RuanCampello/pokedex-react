@@ -3,6 +3,9 @@ import { useEffect, useState } from "react"
 import { Pokemon } from "./pokemonType"
 import pokeball from '../img/pokeball.png'
 import Image from "next/image"
+import { useRecoilState } from "recoil"
+import { japaneseName } from "@/atoms/japaneseName"
+import { genus } from "@/atoms/genus"
 interface PokemonTopProps {
   colour: string
   name: string
@@ -29,6 +32,8 @@ export const typeColours: { [key: string]: string} = {
 }
 export default function PokemonTop({colour, name}: PokemonTopProps) {
   const [pokemon, setPokemon] = useState<Pokemon>()
+  const [originalName, setJapaneseName] = useRecoilState(japaneseName)
+  const [englishGenus, setEnglishGenus] = useRecoilState(genus)
   useEffect(() => {
     async function getPokemon() {
       const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${name}`)
@@ -36,7 +41,7 @@ export default function PokemonTop({colour, name}: PokemonTopProps) {
       setPokemon(data)
     }
     getPokemon()
-  }, [name])
+  }, [name])  
   const imageUrl = pokemon?.sprites.versions["generation-v"]["black-white"]?.animated?.front_default || pokemon?.sprites.front_default
   const stringColour = typeColours[colour] || typeColours['normal']
   return (
@@ -46,15 +51,18 @@ export default function PokemonTop({colour, name}: PokemonTopProps) {
           <h1 className='sm:text-5xl text-6xl font-semibold capitalize'>{pokemon?.species.name}</h1>
           <h2 className='sm:text-lg text-2xl'>#{pokemon?.id}</h2>
         </div>
-        <div className='items-center justify-center lowercase inline space-x-2'>
-            {pokemon?.types.map((type: any) => {
-              return (
-                <span key={type['type']['name']} className={`bg-platinum px-2 py-1 rounded-2xl font-medium sm:text-xs text-lg`} style={{color: stringColour}}>{type['type']['name']}</span>
-              )
-            })}
+        <div className='items-center mt-1 grid grid-cols-2 font-medium'>
+          <div className='col-span-1 flex gap-2 lowercase' >
+          {pokemon?.types.map((type: any) => {
+            return (
+                <span key={type['type']['name']} className={`bg-platinum px-3 py-1 rounded-full sm:text-xs text-lg`} style={{color: stringColour}}>{type['type']['name']}</span>
+                )
+              })}
+          </div>
+          <span className='text-end sm:text-base text-xl sm:font-normal'>{englishGenus}</span>
         </div>
       </div>
-      <Image alt='pokeball' className='rotate-45 h-44 w-44 sm:h-32 sm:w-32 z-10 self-end opacity-40' src={pokeball}/>
+      <span className='absolute top-60 font-bold self-start text-2xl text-platinum/60'>{originalName}</span>
       <Image
       width={12}
       height={12}

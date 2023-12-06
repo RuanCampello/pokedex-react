@@ -7,6 +7,8 @@ import { view } from '@/atoms/view'
 import About from './views/about'
 import BaseStats from './views/baseStats'
 import Evolution, { EvolutionChain } from './views/evolution'
+import { japaneseName } from '@/atoms/japaneseName'
+import { genus } from '@/atoms/genus'
 
 interface PokemonBottomProps {
   colour: string
@@ -36,10 +38,27 @@ interface PokemonSpecies {
   evolution_chain: {
     url: string
   }
+  genera: GenusEntry[]
+}
+interface NameEntry {
+  language: {
+    name: string
+    url: string
+  }
+  name: string
+}
+interface GenusEntry {
+  genus: string
+  language: {
+    name: string
+    url: string
+  }
 }
 
 export default function PokemonBottom({colour, name}: PokemonBottomProps) {
   const [currentView, setView] = useRecoilState(view)
+  const [originalName, setJapaneseName] = useRecoilState(japaneseName)
+  const [englishGenus, setEnglishGenus] = useRecoilState(genus)
   const [pokemon, setPokemon] = useState<Pokemon>()
   const [pokemonStats, setPokemonStats] = useState([])
   const [pokemonSpecies, setPokemonSpecies] = useState<PokemonSpecies | null>(null)
@@ -55,6 +74,12 @@ export default function PokemonBottom({colour, name}: PokemonBottomProps) {
       const response = await fetch(`https://pokeapi.co/api/v2/pokemon-species/${id}`)
       const data = await response.json()
       setPokemonSpecies(data)
+      const japaneseName = (data.names.find((nameEntry: NameEntry) => nameEntry.language.name === 'ja')?.name || '') as string
+      setJapaneseName(japaneseName)
+      const englishGenus = pokemonSpecies?.genera.find(genusEntry => genusEntry.language.name === 'en')?.genus || ''
+      console.log(englishGenus)
+      
+      setEnglishGenus(englishGenus)
     }
     async function getEvoChain() {
       try {

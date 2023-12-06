@@ -6,7 +6,6 @@ interface PokemonProps {
 }
 export default function Pokemon({name}: PokemonProps) {
   const [colour, setColour] = useState(String)
-
   useEffect(() => {
     async function getPokemon() {
       const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${name}`)

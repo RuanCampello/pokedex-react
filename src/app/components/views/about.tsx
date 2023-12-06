@@ -1,5 +1,5 @@
 import { convertKgToPounds, convertMetersToFeetAndInches, sanitizeAndCapitalizeSentences } from '@/app/utils'
-import { GenderFemale, GenderMale, Quotes } from '@phosphor-icons/react'
+import { GenderFemale, GenderMale } from '@phosphor-icons/react'
 
 interface AboutProps {
   description: string
@@ -40,7 +40,7 @@ export default function About({description, height, weight, abilities, genderRat
           <h3>Abilities</h3>
           <ul>
             {abilities.map((ability, index) => (
-              <div className='flex gap-2 text-slate-800 items-center sm:font-normal font-medium' key={index}>
+              <div className='flex gap-2 text-slate-800 items-center sm:font-normal font-medium justify-between' key={index}>
                 {ability.name}
                 {ability.isHidden ? 
                   <span className='text-xs bg-slate-800 text-platinum px-2 p-1 rounded-full font-bold'>hidden</span>
@@ -78,10 +78,10 @@ export default function About({description, height, weight, abilities, genderRat
       </div> */}
       <div className='space-y-4 sm:text-base text-lg'>
         <h1 className='text-lg text-slate-800 font-medium'>Breeding</h1>
-        <div className='text-slate-800 grid sm:grid-cols-3 grid-cols-2'>
+        <div className='text-slate-800 grid grid-cols-2'>
           <h2 className='text-slate-500'>Gender</h2>
           {genderRatio > -1 ? 
-          <div className='sm:col-span-2 grid grid-cols-2 sm:font-normal font-medium'>
+          <div className='grid grid-cols-2 sm:font-normal font-medium'>
             <span className='flex gap-2 items-center'>
               <GenderFemale color='#F95587' size={20} weight='bold'/> {femaleRatio}%
             </span>
@@ -91,9 +91,9 @@ export default function About({description, height, weight, abilities, genderRat
           </div> : 
           <span className='text-slate-800 sm:font-normal font-medium'>unknown</span>}
         </div>
-        <div className='grid sm:grid-cols-3 grid-cols-2'>
+        <div className='grid grid-cols-2'>
           <h2 className='text-slate-500'>Egg groups</h2>
-          <div className='sm:col-span-2 flex gap-2 text-slate-800 sm:font-normal font-medium'>
+          <div className='flex gap-2 text-slate-800 sm:font-normal font-medium'>
             {eggGroups.join(', ')}
           </div>
         </div>
