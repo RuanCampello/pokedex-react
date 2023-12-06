@@ -17,10 +17,39 @@ export default function About({description, height, weight, abilities, genderRat
   let femaleRatio = (genderRatio/8)*100
   
   return (
-    <div className='w-full text-slate-500'>
-      <p className='sm:text-[15px] leading-5 text-lg text-justify italic'>
+    <div className='w-full text-slate-500 sm:text-base text-lg'>
+      <p className='sm:text-[15px] leading-5 text-justify italic'>
         {sanitizeAndCapitalizeSentences(description)}</p>
-      <div className='grid grid-cols-2 sm:grid-cols-3 mt-8 sm:text-base text-lg'>
+        <section className='grid grid-cols-2 my-6 shadow-md p-4 rounded-xl'>
+          <div>
+            <h3>Height</h3>
+            <div className='text-slate-800 space-x-2 sm:font-normal font-medium'>
+              <span>{displayedHeight}</span>
+              <span>({convertMetersToFeetAndInches(height/10)})</span>
+            </div>
+          </div>
+          <div>
+            <h3>Weight</h3>
+            <div className='text-slate-800 space-x-2 sm:font-normal font-medium'>
+              <span>{weight/10} kg</span>
+              <span>({convertKgToPounds(weight/10)})</span>
+            </div>
+          </div>
+        </section>
+        <section className='grid grid-cols-2'>
+          <h3>Abilities</h3>
+          <ul>
+            {abilities.map((ability, index) => (
+              <div className='flex gap-2 text-slate-800 items-center sm:font-normal font-medium' key={index}>
+                {ability.name}
+                {ability.isHidden ? 
+                  <span className='text-xs bg-slate-800 text-platinum px-2 p-1 rounded-full font-bold'>hidden</span>
+                : null}
+              </div>
+            ))}
+          </ul>
+        </section>
+      {/* <div className='grid grid-cols-2 sm:grid-cols-3 mt-8 sm:text-base text-lg'>
         <div className='space-y-4'>
           <p>Height</p>
           <p>Weight</p>
@@ -46,9 +75,9 @@ export default function About({description, height, weight, abilities, genderRat
             ))}
           </ul>
         </div>
-      </div>
+      </div> */}
       <div className='space-y-4 sm:text-base text-lg'>
-        <h1 className='text-lg text-slate-800 font-medium mt-6'>Breeding</h1>
+        <h1 className='text-lg text-slate-800 font-medium'>Breeding</h1>
         <div className='text-slate-800 grid sm:grid-cols-3 grid-cols-2'>
           <h2 className='text-slate-500'>Gender</h2>
           {genderRatio > -1 ? 
