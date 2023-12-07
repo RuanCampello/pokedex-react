@@ -29,6 +29,9 @@ interface PokemonSpecies {
   base_happiness: number
   capture_rate: number
   gender_rate: number
+  generation: {
+    name: string
+  }
   color: {
     name: string
     url: string
@@ -104,7 +107,7 @@ export default function PokemonBottom({colour, name}: PokemonBottomProps) {
         <PokemonPageButton text={'Moves'} pageView={'moves'} />
       </div>
       <div className='px-6 pb-10 text-slate-800'>
-        {currentView === 'about' && <About description={engFlavorText?.flavor_text || ''} height={pokemon?.height || 0} weight={pokemon?.weight || 0} genderRatio={pokemonSpecies?.gender_rate || 0} eggGroups={(pokemonSpecies?.egg_groups || []).map((eggGroup) => eggGroup.name)} abilities={pokemon?.abilities?.map((ability) => ({
+        {currentView === 'about' && <About description={engFlavorText?.flavor_text || ''} height={pokemon?.height || 0} weight={pokemon?.weight || 0} genderRatio={pokemonSpecies?.gender_rate || 0} generation={pokemonSpecies?.generation.name || ''} eggGroups={(pokemonSpecies?.egg_groups || []).map((eggGroup) => eggGroup.name)} abilities={pokemon?.abilities?.map((ability) => ({
         name: ability.ability.name,
         isHidden: ability.is_hidden,
       })) || []} />}
