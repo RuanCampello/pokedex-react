@@ -131,11 +131,12 @@ export type Pokemon = {
       url: string
     }
   }[]
-  types: {
-    slot: number
-    type: {
-      name: string
-      url: string
-    }
-  }[]
+  types: Types[]
+}
+export type Types = {
+  slot: number
+  type: {
+    name: string
+    url: string
+  }
 }

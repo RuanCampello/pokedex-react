@@ -77,8 +77,6 @@ export default function PokemonBottom({colour, name}: PokemonBottomProps) {
       const japaneseName = (data.names.find((nameEntry: NameEntry) => nameEntry.language.name === 'ja')?.name || '') as string
       setJapaneseName(japaneseName)
       const englishGenus = pokemonSpecies?.genera.find(genusEntry => genusEntry.language.name === 'en')?.genus || ''
-      console.log(englishGenus)
-      
       setEnglishGenus(englishGenus)
     }
     async function getEvoChain() {

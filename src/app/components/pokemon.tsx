@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
 import PokemonTop from "./pokemonTop"
 import PokemonBottom from "./pokemonBottom"
+import { SkeletonTheme } from "react-loading-skeleton"
 interface PokemonProps {
   name: string
 }
@@ -16,8 +17,10 @@ export default function Pokemon({name}: PokemonProps) {
   }, [name])
   return (
     <main className='sm:w-[360px] sm:h-[750px] w-screen h-screen overflow-hidden'>
-      <PokemonTop colour={colour} name={name}/>
-      <PokemonBottom colour={colour} name={name}/>
+      <SkeletonTheme baseColor='#D9D9D9'>
+        <PokemonTop colour={colour} name={name}/>
+        <PokemonBottom colour={colour} name={name}/>
+      </SkeletonTheme>
     </main>
   )
 }
