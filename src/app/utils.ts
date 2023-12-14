@@ -38,3 +38,10 @@ export function formatGeneration(generation: string): string {
   const generationNumber = generation.substring(index+1, generation.length).toUpperCase()
   return `Generation ${generationNumber}`
 }
+export function extractNumberFromUrl(url: string): number {
+  // Using regular expression to find the number inside the / /
+  const match = url.match(/\/(\d+)\//)
+  // Check if a match is found
+  if (match) return parseInt(match[1], 10) // Convert the matched string to an integer
+  else return 1; // Return null if no match is found
+}

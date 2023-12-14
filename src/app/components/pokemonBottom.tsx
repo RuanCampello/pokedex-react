@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { Suspense, lazy, useEffect, useState } from 'react'
 import { typeColours } from './pokemonTop'
 import { Pokemon } from './pokemonType'
 import PokemonPageButton from './pokemonPageButton'
@@ -6,7 +6,8 @@ import { useRecoilState } from 'recoil'
 import { view } from '@/atoms/view'
 import About from './views/about'
 import BaseStats from './views/baseStats'
-import Evolution, { EvolutionChain } from './views/evolution'
+const Evolution = lazy(() => import('./views/evolution'))
+import { EvolutionChain } from './views/evolution'
 import { japaneseName } from '@/atoms/japaneseName'
 import { genus } from '@/atoms/genus'
 
@@ -103,7 +104,7 @@ export default function PokemonBottom({colour, name}: PokemonBottomProps) {
       <div className='sticky top-0 left-0 w-full flex justify-around font-medium sm:pt-16 pt-14 px-2 text-slate-800 z-5 bg-platinum sm:text-base text-lg'>
         <PokemonPageButton text={'About'} pageView={'about'} />
         <PokemonPageButton text={'Base stats'} pageView={'stats'} />
-        <PokemonPageButton text={'Evolution'} pageView={'evolution'} />
+        <PokemonPageButton text={'Evolutions'} pageView={'evolution'} />
         <PokemonPageButton text={'Moves'} pageView={'moves'} />
       </div>
       <div className='px-6 pb-10 text-slate-800'>
@@ -112,7 +113,11 @@ export default function PokemonBottom({colour, name}: PokemonBottomProps) {
         isHidden: ability.is_hidden,
       })) || []} />}
         {currentView === 'stats' && <BaseStats stats={pokemonStats} colour={stringColour}/>}
-        {currentView === 'evolution' && <Evolution evolutionData={pokemonEvolutionChain}/>}
+        {currentView === 'evolution' && (
+        <Suspense fallback={<div className='w-40 h-40 text-center'>Loading images...</div>}>
+          <Evolution evolutionData={pokemonEvolutionChain} colour={stringColour} />
+        </Suspense>
+      )}
       </div>
     </div>
   )
