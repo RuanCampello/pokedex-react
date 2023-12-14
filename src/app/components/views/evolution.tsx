@@ -94,7 +94,7 @@ export default function Evolution({ evolutionData, colour }: EvolutionProps) {
   return (
     <div className='flex justify-center'>
       {imagesUrl.length > 1 ? imagesUrl.map((img, index) => (
-        <div className='flex justify-between items-center'>
+        <div key={index} className='flex justify-between items-center'>
           <img className='h-16 w-auto' src={img.url} />
           { index !== imagesUrl.length-1 ? <CaretRight size={32} color={colour} weight='duotone'/> : null }
         </div>
