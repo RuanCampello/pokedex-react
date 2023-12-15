@@ -108,7 +108,7 @@ export default function PokemonBottom({colour, name}: PokemonBottomProps) {
         const id = extractNumberFromUrl(url)
         const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${id}`)
         const data = await response.json()
-        const imageUrl = data?.sprites.versions['generation-v']['black-white']?.animated?.front_default || data?.sprites.front_default
+        const imageUrl = data?.sprites.front_default
         return { url:imageUrl, name }
       })
     )      
@@ -119,7 +119,6 @@ export default function PokemonBottom({colour, name}: PokemonBottomProps) {
         await getPokemon()
         await getPokemonSpecies(pokemon?.id || 1)
         await getEvoChain()
-        console.log(1)
       }
       fetchData()
     }, [name, pokemon?.id, pokemonSpecies?.evolution_chain.url])

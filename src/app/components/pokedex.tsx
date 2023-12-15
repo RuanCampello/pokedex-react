@@ -1,7 +1,7 @@
-import { useState } from "react"
-import Pokemon from "./pokemon"
+import { useState } from 'react'
+import Pokemon from './pokemon'
 import { useRecoilState, RecoilRoot } from 'recoil'
-import { pokemonKey } from "@/atoms/pokemonKey"
+import { pokemonKey } from '@/atoms/pokemonKey'
 import { MagnifyingGlass } from '@phosphor-icons/react'
 
 export default function Pokedex() {
@@ -20,7 +20,7 @@ export default function Pokedex() {
         <input 
           onChange={e => setQuery(e.target.value)}
           value={query}
-          className='sm:w-full rounded-l-xl h-12 text-lg text-slate-800 p-3 focus:outline-none border-r-0 border-4 border-slate-800 sm:border-platinum focus:border-slate-400' placeholder='name or id' type="text" />
+          className='sm:w-full rounded-l-xl h-12 text-lg text-slate-800 p-3 focus:outline-none border-r-0 border-4 border-slate-800 sm:border-white font-medium placeholder:text-slate-500' placeholder='Name or id' type='text' />
         <button className='rounded-r-xl w-16 sm:bg-platinum bg-slate-800 items-center justify-center flex font-medium' type='submit'>
           <MagnifyingGlass size={32} className='sm:text-slate-800 text-platinum' weight='bold' />
         </button>

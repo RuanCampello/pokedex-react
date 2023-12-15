@@ -1,6 +1,5 @@
-import { extractNumberFromUrl } from '@/app/utils'
 import { CaretRight } from '@phosphor-icons/react'
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 
 interface EvolutionTrigger {
   name: string
@@ -75,14 +74,11 @@ export default function Evolution({ colour, images }: EvolutionProps) {
   console.log(images);
   
   return (
-    <div className='flex justify-center'>
+    <div className='flex justify-between rounded-lg shadow-md'>
       {images.length > 1 ? images.map((img, index) => (
-        <div key={index} className='flex justify-between items-center'>
-          <div className='flex flex-col items-center'>
-            <img className='h-20 w-fit object-contain' src={img.url} />
-            <span className='capitalize'>{img.name}</span>
-          </div>
-          { index !== images.length-1 ? <CaretRight size={32} color={colour} weight='duotone'/> : null }
+        <div style={{borderColor: colour}} key={index} className={`flex flex-col items-center w-full ${index < images.length - 1 ? 'sm:border-r-2 border-r-[3px]' : ''}`}>
+          <img className='sm:h-20 h-32 w-fit object-cover' src={img.url} />
+          <span className='pb-2 sm:text-base text-xl sm:font-normal font-medium capitalize text-slate-600'>{img.name}</span>
         </div>
       )) : <div> <span className='capitalize italic'>{images[0]?.name}</span> does not evolve </div>}
     </div>
