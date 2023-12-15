@@ -51,15 +51,18 @@ export interface EvolutionChain {
   }
   id: number
 }
-interface ImageData {
+export interface ImageData {
   name: string
   url: string
 }
 interface EvolutionProps {
-  evolutionData: EvolutionChain[]
   colour: string
+  images: {
+    url: string
+    name: string
+  }[]
 }
-function recursiveEvolution(evolution: Evolution): { name: string; url: string }[] {
+export function recursiveEvolution(evolution: Evolution): { name: string; url: string }[] {
   const data: { name: string; url: string }[] = [{name: evolution.species.name, url: evolution.species.url}]
   if (evolution.evolves_to.length > 0) {
     evolution.evolves_to.forEach((subEvolution: Evolution) => {
@@ -68,37 +71,20 @@ function recursiveEvolution(evolution: Evolution): { name: string; url: string }
   }
   return data
 }
-export default function Evolution({ evolutionData, colour }: EvolutionProps) {
-  const allEvolutions: { name: string; url: string }[] = []
-  const [imagesUrl, setImagesUrl] = useState<ImageData[]>([])
-
-  evolutionData.forEach((chain) => {
-    const chainEvolutions = recursiveEvolution(chain.chain)
-    allEvolutions.push(...chainEvolutions)
-  })
-  useEffect(() => {
-    const fetchImageUrls = async () => {
-      const urls = await Promise.all(
-        allEvolutions.map(async ({ name, url }) => {
-          const id = extractNumberFromUrl(url)
-          const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${id}`)
-          const data = await response.json()
-          const imageUrl = data?.sprites.versions['generation-v']['black-white']?.animated?.front_default || data?.sprites.front_default
-          return { url:imageUrl, name }
-        })
-      )
-      setImagesUrl(urls)
-    }
-    fetchImageUrls()
-  }, [evolutionData])
+export default function Evolution({ colour, images }: EvolutionProps) {
+  console.log(images);
+  
   return (
     <div className='flex justify-center'>
-      {imagesUrl.length > 1 ? imagesUrl.map((img, index) => (
+      {images.length > 1 ? images.map((img, index) => (
         <div key={index} className='flex justify-between items-center'>
-          <img className='h-16 w-auto' src={img.url} />
-          { index !== imagesUrl.length-1 ? <CaretRight size={32} color={colour} weight='duotone'/> : null }
+          <div className='flex flex-col items-center'>
+            <img className='h-20 w-fit object-contain' src={img.url} />
+            <span className='capitalize'>{img.name}</span>
+          </div>
+          { index !== images.length-1 ? <CaretRight size={32} color={colour} weight='duotone'/> : null }
         </div>
-      )) : <div> <span className='capitalize italic'>{imagesUrl[0]?.name}</span> does not evolve </div>}
+      )) : <div> <span className='capitalize italic'>{images[0]?.name}</span> does not evolve </div>}
     </div>
   )
 }

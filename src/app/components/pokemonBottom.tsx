@@ -7,9 +7,11 @@ import { view } from '@/atoms/view'
 import About from './views/about'
 import BaseStats from './views/baseStats'
 const Evolution = lazy(() => import('./views/evolution'))
-import { EvolutionChain } from './views/evolution'
+import { EvolutionChain, recursiveEvolution } from './views/evolution'
 import { japaneseName } from '@/atoms/japaneseName'
 import { genus } from '@/atoms/genus'
+import { extractNumberFromUrl } from '../utils'
+import { ImageData } from './views/evolution'
 
 interface PokemonBottomProps {
   colour: string
@@ -67,36 +69,63 @@ export default function PokemonBottom({colour, name}: PokemonBottomProps) {
   const [pokemonStats, setPokemonStats] = useState([])
   const [pokemonSpecies, setPokemonSpecies] = useState<PokemonSpecies | null>(null)
   const [pokemonEvolutionChain, setEvolutionChain] = useState<EvolutionChain[]>([])
-  useEffect(() => {
-    async function getPokemon() {
-      const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${name}`)
+  const allEvolutions: { name: string; url: string }[] = []
+  const [imagesUrl, setImagesUrl] = useState<ImageData[]>([])
+
+  pokemonEvolutionChain.forEach((chain) => {
+    const chainEvolutions = recursiveEvolution(chain.chain)
+    allEvolutions.push(...chainEvolutions)
+  })
+
+  async function getPokemon() {
+    const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${name}`)
+    const data = await response.json()
+    setPokemon(data)
+    setPokemonStats(data.stats)
+  }
+  async function getPokemonSpecies(id: number) {
+    const response = await fetch(`https://pokeapi.co/api/v2/pokemon-species/${id}`)
+    const data = await response.json()
+    setPokemonSpecies(data)
+    const japaneseName = (data.names.find((nameEntry: NameEntry) => nameEntry.language.name === 'ja')?.name || '') as string
+    setJapaneseName(japaneseName)
+    const englishGenus = pokemonSpecies?.genera.find(genusEntry => genusEntry.language.name === 'en')?.genus || ''
+    setEnglishGenus(englishGenus)
+  }
+  async function getEvoChain() {
+    try {
+      const response = await fetch(pokemonSpecies?.evolution_chain.url || '')
+      if (!response.ok) throw new Error(`Error: ${response.status} - ${response.statusText}`)
       const data = await response.json()
-      setPokemon(data)
-      setPokemonStats(data.stats)
+      setEvolutionChain(data ? [data] : [])
+    } catch (error) {
+      console.error('Error fetching evolution chain:', error)
     }
-    async function getPokemonSpecies(id: number) {
-      const response = await fetch(`https://pokeapi.co/api/v2/pokemon-species/${id}`)
-      const data = await response.json()
-      setPokemonSpecies(data)
-      const japaneseName = (data.names.find((nameEntry: NameEntry) => nameEntry.language.name === 'ja')?.name || '') as string
-      setJapaneseName(japaneseName)
-      const englishGenus = pokemonSpecies?.genera.find(genusEntry => genusEntry.language.name === 'en')?.genus || ''
-      setEnglishGenus(englishGenus)
-    }
-    async function getEvoChain() {
-      try {
-        const response = await fetch(pokemonSpecies?.evolution_chain.url || '')
-        if (!response.ok) throw new Error(`Error: ${response.status} - ${response.statusText}`)
+  }
+  async function fetchImageUrls(){
+    const urls = await Promise.all(
+      allEvolutions.map(async ({ name, url }) => {
+        const id = extractNumberFromUrl(url)
+        const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${id}`)
         const data = await response.json()
-        setEvolutionChain(data ? [data] : [])
-      } catch (error) {
-        console.error('Error fetching evolution chain:', error)
+        const imageUrl = data?.sprites.versions['generation-v']['black-white']?.animated?.front_default || data?.sprites.front_default
+        return { url:imageUrl, name }
+      })
+    )      
+    setImagesUrl(urls)
+  }
+    useEffect(() => {
+      async function fetchData() {
+        await getPokemon()
+        await getPokemonSpecies(pokemon?.id || 1)
+        await getEvoChain()
+        console.log(1)
       }
-    }
-    getPokemon()
-    getPokemonSpecies(pokemon?.id || 1)
-    getEvoChain()
-  }, [name, pokemon?.id, pokemonSpecies?.evolution_chain.url])
+      fetchData()
+    }, [name, pokemon?.id, pokemonSpecies?.evolution_chain.url])
+    useEffect(() => {
+      if (pokemonEvolutionChain.length > 0) fetchImageUrls()
+    }, [pokemonEvolutionChain])
   const stringColour = typeColours[colour] || typeColours['normal']
   const engFlavorText = pokemonSpecies?.flavor_text_entries.find((entry) => entry.language.name === 'en')
   return (
@@ -115,7 +144,7 @@ export default function PokemonBottom({colour, name}: PokemonBottomProps) {
         {currentView === 'stats' && <BaseStats stats={pokemonStats} colour={stringColour}/>}
         {currentView === 'evolution' && (
         <Suspense fallback={<div className='w-40 h-40 text-center'>Loading images...</div>}>
-          <Evolution evolutionData={pokemonEvolutionChain} colour={stringColour} />
+          <Evolution colour={stringColour} images={imagesUrl} />
         </Suspense>
       )}
       </div>
