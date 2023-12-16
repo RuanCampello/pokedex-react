@@ -1,10 +1,12 @@
 'use client'
 import { useEffect, useState } from 'react'
-import { Pokemon, Types } from './pokemonType'
+import { Pokemon, Types } from './types/pokemonType'
 import Image from 'next/image'
 import { useRecoilState } from 'recoil'
 import { japaneseName } from '@/atoms/japaneseName'
 import { genus } from '@/atoms/genus'
+import { CaretLeft, CaretRight } from '@phosphor-icons/react'
+import { pokemonKey } from '@/atoms/pokemonKey'
 interface PokemonTopProps {
   colour: string
   name: string
@@ -33,6 +35,8 @@ export default function PokemonTop({colour, name}: PokemonTopProps) {
   const [pokemon, setPokemon] = useState<Pokemon>()
   const [originalName, setJapaneseName] = useRecoilState(japaneseName)
   const [englishGenus, setEnglishGenus] = useRecoilState(genus)
+  const [pokeKey, setPokeKey] = useRecoilState(pokemonKey)
+
   useEffect(() => {
     async function getPokemon() {
       const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${name}`)
@@ -40,13 +44,11 @@ export default function PokemonTop({colour, name}: PokemonTopProps) {
       setPokemon(data)
     }
     getPokemon()
-  }, [name])  
+  }, [name, pokeKey])  
   const imageUrl = pokemon?.sprites.versions['generation-v']['black-white']?.animated?.front_default || pokemon?.sprites.front_default
-  console.log(imageUrl);
-  
   const stringColour = typeColours[colour] || typeColours['normal']
   return (
-    <div className={`sm:rounded-t-2xl p-8 h-1/3 flex flex-col`} style={{background: stringColour}}>
+    <div className={`sm:rounded-t-2xl p-8 pb-3 h-1/3 flex flex-col`} style={{background: stringColour}}>
       <div className='flex flex-col gap-2'>
         <div className='flex items-baseline justify-between'>
           <h1 className='sm:text-5xl text-6xl font-semibold capitalize'>{pokemon?.species.name}</h1>
@@ -63,7 +65,15 @@ export default function PokemonTop({colour, name}: PokemonTopProps) {
           <span className='text-end sm:text-base text-xl sm:font-normal'>{englishGenus}</span>
         </div>
       </div>
-      <span className='absolute top-60 font-bold self-start text-2xl text-platinum/60'>{originalName}</span>
+      <span className='absolute top-60 font-bold self-start text-2xl text-platinum/70'>{originalName}</span>
+      {/* <div className='flex justify-between mt-auto'>
+        <button onClick={returnPokemon} className='bg-platinum p-2 rounded-full'>
+          <CaretLeft color={stringColour} size={18} weight='bold'/>
+        </button>
+        <button onClick={passPokemon} className='bg-platinum p-2 rounded-full'>
+          <CaretRight color={stringColour} size={18} weight='bold'/>
+        </button>
+      </div> */}
       <Image
       width={240}
       height={240}

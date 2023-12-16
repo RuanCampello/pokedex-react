@@ -1,6 +1,6 @@
 import { Suspense, lazy, useEffect, useState } from 'react'
 import { typeColours } from './pokemonTop'
-import { Pokemon } from './pokemonType'
+import { Pokemon } from './types/pokemonType'
 import PokemonPageButton from './pokemonPageButton'
 import { useRecoilState } from 'recoil'
 import { view } from '@/atoms/view'
@@ -12,6 +12,7 @@ import { japaneseName } from '@/atoms/japaneseName'
 import { genus } from '@/atoms/genus'
 import { extractNumberFromUrl } from '../utils'
 import { ImageData } from './views/evolution'
+import Moves, { Move } from './views/moves'
 
 interface PokemonBottomProps {
   colour: string
@@ -71,6 +72,10 @@ export default function PokemonBottom({colour, name}: PokemonBottomProps) {
   const [pokemonEvolutionChain, setEvolutionChain] = useState<EvolutionChain[]>([])
   const allEvolutions: { name: string; url: string }[] = []
   const [imagesUrl, setImagesUrl] = useState<ImageData[]>([])
+  type MoveData = Move[]
+  const [movesData, setMovesData] = useState<MoveData>([])
+  const [levelUpMoves, setLevelUpMoves] = useState<MoveData>([])
+  const [machineMoves, setMachineMoves] = useState<MoveData>([])
 
   pokemonEvolutionChain.forEach((chain) => {
     const chainEvolutions = recursiveEvolution(chain.chain)
@@ -82,6 +87,7 @@ export default function PokemonBottom({colour, name}: PokemonBottomProps) {
     const data = await response.json()
     setPokemon(data)
     setPokemonStats(data.stats)
+    setMovesData(data.moves)
   }
   async function getPokemonSpecies(id: number) {
     const response = await fetch(`https://pokeapi.co/api/v2/pokemon-species/${id}`)
@@ -114,17 +120,28 @@ export default function PokemonBottom({colour, name}: PokemonBottomProps) {
     )      
     setImagesUrl(urls)
   }
-    useEffect(() => {
-      async function fetchData() {
-        await getPokemon()
-        await getPokemonSpecies(pokemon?.id || 1)
-        await getEvoChain()
-      }
-      fetchData()
-    }, [name, pokemon?.id, pokemonSpecies?.evolution_chain.url])
-    useEffect(() => {
-      if (pokemonEvolutionChain.length > 0) fetchImageUrls()
-    }, [pokemonEvolutionChain])
+  useEffect(() => {
+    async function fetchData() {
+      await getPokemon()
+      await getPokemonSpecies(pokemon?.id || 1)
+      await getEvoChain()
+    }
+    fetchData()
+  }, [name, pokemon?.id, pokemonSpecies?.evolution_chain.url])
+  useEffect(() => {
+    if (pokemonEvolutionChain.length > 0) fetchImageUrls()
+  }, [pokemonEvolutionChain])
+// separate moves based on move_learn_method
+  useEffect(() => {
+    const levelUpMoves = movesData.filter(move =>
+      move.version_group_details.some(detail => detail.move_learn_method.name === 'level-up')
+    )
+    const machineMoves = movesData.filter(move =>
+      move.version_group_details.some(detail => detail.move_learn_method.name === 'machine')
+    )
+    setLevelUpMoves(levelUpMoves)
+    setMachineMoves(machineMoves)
+  }, [movesData])
   const stringColour = typeColours[colour] || typeColours['normal']
   const engFlavorText = pokemonSpecies?.flavor_text_entries.find((entry) => entry.language.name === 'en')
   return (
@@ -142,10 +159,9 @@ export default function PokemonBottom({colour, name}: PokemonBottomProps) {
       })) || []} />}
         {currentView === 'stats' && <BaseStats stats={pokemonStats} colour={stringColour}/>}
         {currentView === 'evolution' && (
-        <Suspense fallback={<div className='w-40 h-40 text-center'>Loading images...</div>}>
-          <Evolution colour={stringColour} images={imagesUrl} />
-        </Suspense>
-      )}
+        <Evolution colour={stringColour} images={imagesUrl} />
+        )}
+        {currentView === 'moves' && <Moves levelUpMoves={levelUpMoves} machineMoves={machineMoves}/>}
       </div>
     </div>
   )

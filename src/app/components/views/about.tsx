@@ -51,8 +51,8 @@ export default function About({description, height, weight, abilities, genderRat
             ))}
           </ul>
         </section>
-      <div className='space-y-4 sm:text-base text-lg'>
-        <h1 className='text-lg text-slate-800 font-medium'>Breeding</h1>
+      <div className='space-y-2 sm:text-base text-lg'>
+        <h1 className='text-lg text-slate-800 font-medium pb-1'>Breeding</h1>
         <div className='text-slate-800 grid grid-cols-2'>
           <h2 className='text-slate-500'>Gender</h2>
           {genderRatio > -1 ? 

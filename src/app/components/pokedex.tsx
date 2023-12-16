@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Pokemon from './pokemon'
 import { useRecoilState, RecoilRoot } from 'recoil'
 import { pokemonKey } from '@/atoms/pokemonKey'

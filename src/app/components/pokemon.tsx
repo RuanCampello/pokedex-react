@@ -1,7 +1,6 @@
-import { useEffect, useState } from "react"
-import PokemonTop from "./pokemonTop"
-import PokemonBottom from "./pokemonBottom"
-import { SkeletonTheme } from "react-loading-skeleton"
+import { useEffect, useState } from 'react'
+import PokemonTop from './pokemonTop'
+import PokemonBottom from './pokemonBottom'
 interface PokemonProps {
   name: string
 }

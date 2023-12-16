@@ -1,6 +1,6 @@
 import { transformStatName } from '@/app/utils';
 import Line from '../line';
-import { Stat } from '../pokemonType';
+import { Stat } from '../types/pokemonType';
 
 interface BaseStatsProps {
   stats: Stat[]
