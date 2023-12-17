@@ -57,7 +57,7 @@ export default function Moves({levelUpMoves, machineMoves}: MovesProps) {
                   <span className='capitalize sm:text-base text-xl font-medium'>{move.name}</span>
                   {/* <span>{}</span> level learned */}
                 </div>
-                <span className='text-center sm:text-base text-lg'>{move.type.name}</span>
+                <span title={move.type.name} className='text-center cursor-default sm:text-base text-lg'>{move.type.name}</span>
                 {move.accuracy ? 
                   <span className='text-end sm:text-base text-lg'>{`${move.accuracy}%`}</span>
                 :''}

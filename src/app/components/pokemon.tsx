@@ -15,7 +15,7 @@ export default function Pokemon({name}: PokemonProps) {
     getPokemon()
   }, [name])
   return (
-    <main className='sm:w-[360px] sm:h-[750px] w-screen h-screen overflow-hidden'>
+    <main className='sm:w-pokedex sm:h-pokedex w-screen h-screen'>
       <PokemonTop colour={colour} name={name}/>
       <PokemonBottom colour={colour} name={name}/>
     </main>
