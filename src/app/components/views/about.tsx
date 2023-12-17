@@ -21,7 +21,7 @@ export default function About({description, height, weight, abilities, genderRat
     <div className='w-full text-slate-500 sm:text-base text-lg'>
       <p className='sm:text-[15px] leading-5 text-justify italic'>
         {sanitizeAndCapitalizeSentences(description)}</p>
-        <span className='float-right'>- {formatGeneration(generation)}</span>
+        <span className='float-right mb-2'>- {formatGeneration(generation)}</span>
         <section className='w-full grid grid-cols-2 my-6 shadow-md p-4 rounded-xl'>
           <div>
             <h3>Height</h3>

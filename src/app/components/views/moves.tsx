@@ -42,7 +42,7 @@ export default function Moves({levelUpMoves, machineMoves}: MovesProps) {
     fetchData()
   }, [levelUpMoves])
   return (
-    <div>
+    <div className='sm:m-0 mb-12'>
       {
         levelUpMovesData.map((move, index) => {
           const effectText = move.effect_entries && move.effect_entries[0] && (move.effect_entries[0].short_effect || move.effect_entries[0].effect)
@@ -54,15 +54,15 @@ export default function Moves({levelUpMoves, machineMoves}: MovesProps) {
             <div className='flex flex-col mb-2 gap-1' key={index}>
               <div className='grid grid-cols-3 mx-2'>
                 <div>
-                  <span className='capitalize sm:text-base text-lg font-medium'>{move.name}</span>
+                  <span className='capitalize sm:text-base text-xl font-medium'>{move.name}</span>
                   {/* <span>{}</span> level learned */}
                 </div>
-                <span className='text-center'>{move.type.name}</span>
+                <span className='text-center sm:text-base text-lg'>{move.type.name}</span>
                 {move.accuracy ? 
-                  <span className='text-end'>{`${move.accuracy}%`}</span>
+                  <span className='text-end sm:text-base text-lg'>{`${move.accuracy}%`}</span>
                 :''}
               </div>
-              <span className={`text-sm text-justify  mx-2 mb-2 text-slate-500`}>
+              <span className={`sm:text-sm text-base text-justify  mx-2 mb-2 text-slate-500`}>
                 {textToDisplay}
               </span>
             </div>
