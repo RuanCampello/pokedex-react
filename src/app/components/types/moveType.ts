@@ -2,8 +2,8 @@ export type MoveType = {
   accuracy: number
   name: string
   type: {
-    name: string;
-    url: string;
+    name: string
+    url: string
   }
   contest_combos: {
     normal: {
@@ -50,4 +50,5 @@ export type MoveType = {
       url: string
     }
   }[]
+  level_learned_at?: number
 }

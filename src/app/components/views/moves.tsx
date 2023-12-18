@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { MoveType } from '../types/moveType'
+import Badge from '../badge'
 
 export type Move = {
   move: {
@@ -18,6 +19,7 @@ export type Move = {
     }
   }[]
 }
+
 interface MovesProps {
   levelUpMoves: Move[]
   machineMoves: Move[]
@@ -41,7 +43,12 @@ const typeImages: { [key: string]: { path: string; colour: string } } = {
   psychic: { path: 'icons/psychic.svg', colour: '#F95587' },
   rock: { path: 'icons/rock.svg', colour: '#B6A136' },
   steel: { path: 'icons/steel.svg', colour: '#B7B7CE' },
-  water: { path: 'icons/water.svg', colour: '#6390F0' },
+  water: { path: 'icons/water.svg', colour: '#6390F0' }
+}
+const damageCategoryImages: { [key: string] : { path: string; colour: string } } = {
+  physical: { path: 'damage-category/physical.png', colour: '#EF6845' },
+  special: { path: 'damage-category/special.png', colour: '#61ADF3' },
+  status: { path: 'damage-category/status.png', colour: '#96999A' }
 }
 
 export default function Moves({levelUpMoves, machineMoves}: MovesProps) {
@@ -54,7 +61,15 @@ export default function Moves({levelUpMoves, machineMoves}: MovesProps) {
       const movePromises = levelMoveUrls.map(async(url) => {
         const response = await fetch(url)
         const moveData: MoveType = await response.json()
+
+        const correspondingMove = levelUpMoves.find((move) => move.move.url === url)
+        if (correspondingMove) {
+          const levelLearnedInfo = correspondingMove.version_group_details[0]
+          moveData.level_learned_at = levelLearnedInfo.level_learned_at
+        }
+
         if(moveData.name) moveData.name = moveData.name.split('-').join(' ')
+        
         return moveData
       })
       const movesData = await Promise.all(movePromises)
@@ -63,28 +78,35 @@ export default function Moves({levelUpMoves, machineMoves}: MovesProps) {
     fetchData()
   }, [levelUpMoves])
   return (
-    <div className='sm:m-0 mb-12'>
+    <div className='sm:pb-0 pb-12'>
       {
         levelUpMovesData.map((move, index) => {
-          const effectText = move.effect_entries && move.effect_entries[0] && (move.effect_entries[0].short_effect || move.effect_entries[0].effect)
+          const effectText = move.effect_entries && move.effect_entries[0] && (move.effect_entries[0].effect)
           const replacedEffect = effectText && move.effect_chance ? effectText.replace(/\$effect_chance/g, move.effect_chance.toString()) : effectText
           const flavorText = move.flavor_text_entries && move.flavor_text_entries.find(entry => entry.language.name === 'en')
           const textToDisplay = replacedEffect || (flavorText && flavorText.flavor_text) || 'n/a'
 
           const typeImageUrl = typeImages[move.type.name]
-
+          const damageCategory = damageCategoryImages[move.damage_class.name]
+          
           return (
-            <div className='flex flex-col my-2 gap-1' key={index}>
+            <div className='flex flex-col my-2 gap-1 sm:mb-4 mb-7' key={index}>
               <div className='grid grid-cols-5 mx-2 items-center'>
                 <div className='col-span-2'>
-                  <span className='capitalize sm:text-base text-[22px] font-medium'>{move.name}</span>
-                  {/* <span>{}</span> level learned */}
+                  <span className='capitalize sm:text-lg text-[22px] font-medium'>{move.name}</span>
                 </div>
-                {move.accuracy ? 
-                  <span className='col-span-2 text-start sm:text-base text-xl'>{`${move.accuracy}%`}</span>
-                :<span className='col-span-2'></span>}
-                <div style={{background: typeImageUrl.colour}} title={move.type.name} className='flex justify-self-end items-center cursor-default sm:text-base text-lg sm:p-[5px] p-[6px] w-fit rounded-full'>
-                  <img className='sm:h-4 h-6' src={typeImageUrl.path} alt={move.type.name} />
+                <div className='flex gap-1 justify-center'>
+                  <Badge background={damageCategory.colour} title={move.damage_class.name} imageUrl={damageCategory.path} />
+                  <Badge background={typeImageUrl.colour} title={move.type.name} imageUrl={typeImageUrl.path} />
+                </div>
+                <div className={`col-span-2 sm:text-sm items-center text-lg text-slate-700 border-slate-700 border-2 rounded-full sm:w-28 w-32 justify-center flex justify-self-end`}>
+                  <span className='w-[55px] flex justify-center'>
+                    {move.accuracy ? `Lv.${move.level_learned_at}` : `Lv. ${move.level_learned_at}`}
+                  </span>
+                  <div className='sm:h-6 h-7 w-[2px] bg-slate-700'></div>
+                  <span className='w-[55px] flex justify-center'>
+                    {move.accuracy ? `${move.accuracy}%` : 'n/a'}
+                  </span>
                 </div>
               </div>
               <span className={`sm:text-sm text-lg text-justify  mx-2 mb-2 text-slate-500`}>
