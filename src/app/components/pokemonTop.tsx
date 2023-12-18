@@ -5,7 +5,6 @@ import Image from 'next/image'
 import { useRecoilState } from 'recoil'
 import { japaneseName } from '@/atoms/japaneseName'
 import { genus } from '@/atoms/genus'
-import { CaretLeft, CaretRight } from '@phosphor-icons/react'
 import { pokemonKey } from '@/atoms/pokemonKey'
 interface PokemonTopProps {
   colour: string
