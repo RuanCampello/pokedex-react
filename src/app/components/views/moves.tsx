@@ -77,17 +77,17 @@ export default function Moves({levelUpMoves, machineMoves}: MovesProps) {
             <div className='flex flex-col my-2 gap-1' key={index}>
               <div className='grid grid-cols-5 mx-2 items-center'>
                 <div className='col-span-2'>
-                  <span className='capitalize sm:text-base text-xl font-medium'>{move.name}</span>
+                  <span className='capitalize sm:text-base text-[22px] font-medium'>{move.name}</span>
                   {/* <span>{}</span> level learned */}
                 </div>
-                <div style={{background: typeImageUrl.colour}} title={move.type.name} className='flex justify-self-center items-center cursor-default sm:text-base text-lg p-1 w-fit rounded-full'>
-                  <img className='sm:h-4 h-5' src={typeImageUrl.path} alt={move.type.name} />
-                </div>
                 {move.accuracy ? 
-                  <span className='col-span-2 text-end sm:text-base text-lg'>{`${move.accuracy}%`}</span>
-                :''}
+                  <span className='col-span-2 text-start sm:text-base text-xl'>{`${move.accuracy}%`}</span>
+                :<span className='col-span-2'></span>}
+                <div style={{background: typeImageUrl.colour}} title={move.type.name} className='flex justify-self-end items-center cursor-default sm:text-base text-lg sm:p-[5px] p-[6px] w-fit rounded-full'>
+                  <img className='sm:h-4 h-6' src={typeImageUrl.path} alt={move.type.name} />
+                </div>
               </div>
-              <span className={`sm:text-sm text-base text-justify  mx-2 mb-2 text-slate-500`}>
+              <span className={`sm:text-sm text-lg text-justify  mx-2 mb-2 text-slate-500`}>
                 {textToDisplay}
               </span>
             </div>

@@ -146,7 +146,7 @@ export default function PokemonBottom({colour, name}: PokemonBottomProps) {
   const engFlavorText = pokemonSpecies?.flavor_text_entries.find((entry) => entry.language.name === 'en')
   return (
     <div className='relative h-2/3 bg-platinum overflow-y-scroll scrollbar-thin scrollbar-thumb-slate-600 scrollbar-track-slate-900 scrollbar-thumb-rounded-full sm:rounded-b-2xl'>
-      <div className='sticky top-0 left-0 w-full flex justify-around font-medium sm:pt-16 pt-14 px-2 text-slate-800 z-5 bg-platinum sm:text-base text-lg'>
+      <div className='sticky top-0 left-0 w-full flex justify-around font-medium sm:pt-16 pt-14 px-2 text-slate-800 z-5 bg-platinum sm:text-base text-xl'>
         <PokemonPageButton text={'About'} pageView={'about'} />
         <PokemonPageButton text={'Base stats'} pageView={'stats'} />
         <PokemonPageButton text={'Evolutions'} pageView={'evolution'} />
