@@ -40,11 +40,11 @@ export default function PokemonTop({colour, name}: PokemonTopProps) {
           <div className='col-span-1 flex gap-2 lowercase' >
           {pokemon?.types.map((type: Types, i) => {
             return (
-              <span key={i} className={`bg-platinum px-3 py-1 rounded-full sm:text-xs text-lg`} style={{color: stringColour.colour}}>{type.type.name}</span>
+              <span key={i} className={`bg-platinum px-3 py-1 rounded-full sm:text-xs`} style={{color: stringColour.colour}}>{type.type.name}</span>
             )
           })}
           </div>
-          <span className='text-end sm:text-base text-xl sm:font-normal'>{englishGenus}</span>
+          <span className='text-end sm:text-sm text-md sm:font-normal'>{englishGenus}</span>
         </div>
       </div>
       <span className='absolute top-60 font-bold self-start text-2xl text-platinum/70'>{originalName}</span>

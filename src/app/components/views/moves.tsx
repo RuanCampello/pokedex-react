@@ -26,17 +26,17 @@ interface MovesProps {
 }
 
 export const typeImagesAndColours: { [key: string]: { path: string; colour: string } } = {
-  bug: { path: 'icons/bug.svg', colour: '#A6B91A' },
+  bug: { path: 'icons/bug.svg', colour: '#6BBC46' },
   dark: { path: 'icons/dark.svg', colour: '#705746' },
   dragon: { path: 'icons/dragon.svg', colour: '#6F35FC' },
-  electric: { path: 'icons/electric.svg', colour: '#ff9e00' },
+  electric: { path: 'icons/electric.svg', colour: '#F68E1D' },
   fairy: { path: 'icons/fairy.svg', colour: '#D685AD' },
   fighting: { path: 'icons/fighting.svg', colour: '#A98FF3' },
-  fire: { path: 'icons/fire.svg', colour: '#EE8130' },
+  fire: { path: 'icons/fire.svg', colour: '#EE742D' },
   flying: { path: 'icons/flying.svg', colour: '#748FC9' },
   ghost: { path: 'icons/ghost.svg', colour: '#735797' },
-  grass: { path: 'icons/grass.svg', colour: '#7AC74C' },
-  ground: { path: 'icons/ground.svg', colour: '#E2BF65' },
+  grass: { path: 'icons/grass.svg', colour: '#2FBF71' },
+  ground: { path: 'icons/ground.svg', colour: '#D5AC45' },
   ice: { path: 'icons/ice.svg', colour: '#6497b1' },
   normal: { path: 'icons/normal.svg', colour: '#A8A77A' },
   poison: { path: 'icons/poison.svg', colour: '#A33EA1' },
