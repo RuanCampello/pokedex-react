@@ -15,14 +15,17 @@ export default function About({description, height, weight, abilities, genderRat
   let displayedHeight = String(height)
   if(height >= 10) displayedHeight = `${height/10} m`
   else displayedHeight = `${height*10} cm`
-  let femaleRatio = (genderRatio/8)*100
+  let femaleRatio = (genderRatio/8)*100 
   
   return (
     <div className='w-full text-slate-500 sm:text-base text-lg'>
       <p className='sm:text-[15px] leading-5 text-justify italic'>
         {sanitizeAndCapitalizeSentences(description)}</p>
-        <span className='float-right mb-2'>- {formatGeneration(generation)}</span>
-        <section className='w-full grid grid-cols-2 my-6 shadow-md p-4 rounded-xl'>
+        { description ?
+          <span className='float-right mb-2'>- {formatGeneration(generation)}</span>
+          : null
+        }
+        <section className='w-full grid grid-cols-2 mb-6 shadow-md p-4 rounded-xl'>
           <div>
             <h3>Height</h3>
             <div className='text-slate-800 space-x-2 sm:font-normal font-medium'>
@@ -38,7 +41,7 @@ export default function About({description, height, weight, abilities, genderRat
             </div>
           </div>
         </section>
-        <section className='grid grid-cols-2'>
+        <section className='grid grid-cols-2 pb-2'>
           <h3>Abilities</h3>
           <ul>
             {abilities.map((ability, index) => (
@@ -66,12 +69,14 @@ export default function About({description, height, weight, abilities, genderRat
           </div> : 
           <span className='text-slate-800 sm:font-normal font-medium'>unknown</span>}
         </div>
+        { eggGroups.length > 0 ?
         <div className='grid grid-cols-2'>
           <h2 className='text-slate-500'>Egg groups</h2>
           <div className='flex gap-2 text-slate-800 sm:font-normal font-medium'>
             {eggGroups.join(', ')}
           </div>
-        </div>
+        </div> : null
+        }
       </div>
     </div>
   )
