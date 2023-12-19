@@ -1,5 +1,5 @@
-import { Suspense, lazy, useEffect, useState } from 'react'
-import { typeColours } from './pokemonTop'
+import { lazy, useEffect, useState } from 'react'
+import { typeImagesAndColours } from './views/moves'
 import { Pokemon } from './types/pokemonType'
 import PokemonPageButton from './pokemonPageButton'
 import { useRecoilState } from 'recoil'
@@ -142,7 +142,7 @@ export default function PokemonBottom({colour, name}: PokemonBottomProps) {
     setLevelUpMoves(levelUpMoves)
     setMachineMoves(machineMoves)
   }, [movesData])
-  const stringColour = typeColours[colour] || typeColours['normal']
+  const stringColour = typeImagesAndColours[colour] || typeImagesAndColours['normal']
   const engFlavorText = pokemonSpecies?.flavor_text_entries.find((entry) => entry.language.name === 'en')
   return (
     <div className='relative h-2/3 bg-platinum overflow-y-scroll scrollbar-thin scrollbar-thumb-slate-600 scrollbar-track-slate-900 scrollbar-thumb-rounded-full sm:rounded-b-2xl'>
@@ -157,9 +157,9 @@ export default function PokemonBottom({colour, name}: PokemonBottomProps) {
         name: ability.ability.name,
         isHidden: ability.is_hidden,
       })) || []} />}
-        {currentView === 'stats' && <BaseStats stats={pokemonStats} colour={stringColour}/>}
+        {currentView === 'stats' && <BaseStats stats={pokemonStats} colour={stringColour.colour}/>}
         {currentView === 'evolution' && (
-        <Evolution colour={stringColour} images={imagesUrl} />
+        <Evolution colour={stringColour.colour} images={imagesUrl} />
         )}
         {currentView === 'moves' && <Moves levelUpMoves={levelUpMoves} machineMoves={machineMoves}/>}
       </div>

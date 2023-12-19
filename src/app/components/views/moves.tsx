@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { MoveType } from '../types/moveType'
 import Badge from '../badge'
 
@@ -25,7 +25,7 @@ interface MovesProps {
   machineMoves: Move[]
 }
 
-const typeImages: { [key: string]: { path: string; colour: string } } = {
+export const typeImagesAndColours: { [key: string]: { path: string; colour: string } } = {
   bug: { path: 'icons/bug.svg', colour: '#A6B91A' },
   dark: { path: 'icons/dark.svg', colour: '#705746' },
   dragon: { path: 'icons/dragon.svg', colour: '#6F35FC' },
@@ -45,6 +45,7 @@ const typeImages: { [key: string]: { path: string; colour: string } } = {
   steel: { path: 'icons/steel.svg', colour: '#B7B7CE' },
   water: { path: 'icons/water.svg', colour: '#6390F0' }
 }
+
 const damageCategoryImages: { [key: string] : { path: string; colour: string } } = {
   physical: { path: 'damage-category/physical.png', colour: '#EF6845' },
   special: { path: 'damage-category/special.png', colour: '#61ADF3' },
@@ -54,9 +55,10 @@ const damageCategoryImages: { [key: string] : { path: string; colour: string } }
 export default function Moves({levelUpMoves, machineMoves}: MovesProps) {
   const [levelUpMovesData, setLevelUpMovesData] = useState<MoveType[]>([])
 
+  const levelMoveUrls = useMemo(() => levelUpMoves.map((move) => move.move.url), [levelUpMoves])
+  const machineMoveUrls = useMemo(() => machineMoves.map((move) => move.move.url), [machineMoves])
+
   useEffect(() => {
-    const levelMoveUrls = levelUpMoves.map((move) => move.move.url)
-    const machineMoveUrls = machineMoves.map((move) => move.move.url)
     async function fetchData() {
       const movePromises = levelMoveUrls.map(async(url) => {
         const response = await fetch(url)
@@ -67,9 +69,10 @@ export default function Moves({levelUpMoves, machineMoves}: MovesProps) {
           const levelLearnedInfo = correspondingMove.version_group_details[0]
           moveData.level_learned_at = levelLearnedInfo.level_learned_at
         }
-
         if(moveData.name) moveData.name = moveData.name.split('-').join(' ')
-        
+        moveData.effect_entries.forEach((entry) => {
+          entry.effect = entry.effect.replace(/[-:]/g, '')
+        })
         return moveData
       })
       const movesData = await Promise.all(movePromises)
@@ -86,7 +89,7 @@ export default function Moves({levelUpMoves, machineMoves}: MovesProps) {
           const flavorText = move.flavor_text_entries && move.flavor_text_entries.find(entry => entry.language.name === 'en')
           const textToDisplay = replacedEffect || (flavorText && flavorText.flavor_text) || 'n/a'
 
-          const typeImageUrl = typeImages[move.type.name]
+          const typeImageUrl = typeImagesAndColours[move.type.name]
           const damageCategory = damageCategoryImages[move.damage_class.name]
           
           return (
@@ -101,7 +104,7 @@ export default function Moves({levelUpMoves, machineMoves}: MovesProps) {
                 </div>
                 <div className={`col-span-2 sm:text-sm items-center text-lg text-slate-700 border-slate-700 border-2 rounded-full sm:w-28 w-32 justify-center flex justify-self-end`}>
                   <span className='w-[55px] flex justify-center'>
-                    {move.accuracy ? `Lv.${move.level_learned_at}` : `Lv. ${move.level_learned_at}`}
+                    {move.level_learned_at! > 0 ? `Lv.${move.level_learned_at}` : `n/a`}
                   </span>
                   <div className='sm:h-6 h-7 w-[2px] bg-slate-700'></div>
                   <span className='w-[55px] flex justify-center'>
