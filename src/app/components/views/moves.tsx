@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 import { MoveType } from '../types/moveType'
-import Badge from '../badge'
+import LevelUpMoves from '../levelUpMoves'
 
 export type Move = {
   move: {
@@ -82,6 +82,7 @@ export default function Moves({levelUpMoves, machineMoves}: MovesProps) {
   }, [levelUpMoves])
   return (
     <div className='sm:pb-0 pb-12'>
+      <h1 className='sm:text-xl text-2xl font-bold mb-4 pb-1 sm:border-b-2 border-b-4 border-slate-800'>Learned by level</h1>
       {
         levelUpMovesData.map((move, index) => {
           const effectText = move.effect_entries && move.effect_entries[0] && (move.effect_entries[0].effect)
@@ -93,29 +94,7 @@ export default function Moves({levelUpMoves, machineMoves}: MovesProps) {
           const damageCategory = damageCategoryImages[move.damage_class.name]
           
           return (
-            <div className='flex flex-col my-2 gap-1 sm:mb-4 mb-7' key={index}>
-              <div className='grid grid-cols-5 mx-2 items-center'>
-                <div className='col-span-2'>
-                  <span className='capitalize sm:text-lg text-[22px] font-medium'>{move.name}</span>
-                </div>
-                <div className='flex gap-1 justify-center'>
-                  <Badge background={damageCategory.colour} title={move.damage_class.name} imageUrl={damageCategory.path} />
-                  <Badge background={typeImageUrl.colour} title={move.type.name} imageUrl={typeImageUrl.path} />
-                </div>
-                <div className={`col-span-2 sm:text-sm items-center text-lg text-slate-700 border-slate-700 border-2 rounded-full sm:w-28 w-32 justify-center flex justify-self-end`}>
-                  <span className='w-[55px] flex justify-center'>
-                    {move.level_learned_at! > 0 ? `Lv.${move.level_learned_at}` : `n/a`}
-                  </span>
-                  <div className='sm:h-6 h-7 w-[2px] bg-slate-700'></div>
-                  <span className='w-[55px] flex justify-center'>
-                    {move.accuracy ? `${move.accuracy}%` : 'n/a'}
-                  </span>
-                </div>
-              </div>
-              <span className={`sm:text-sm text-lg text-justify  mx-2 mb-2 text-slate-500`}>
-                {textToDisplay}
-              </span>
-            </div>
+            <LevelUpMoves key={index} typeImage={typeImageUrl.path} text={textToDisplay} damageClass={move.damage_class.name} classImage={damageCategory.path} elementalColour={typeImageUrl.colour} classColour={damageCategory.colour} levelLearned={move.level_learned_at || 0} accuracy={move.accuracy} name={move.name} elementalType={move.type.name}/>
           )
         })
       }
