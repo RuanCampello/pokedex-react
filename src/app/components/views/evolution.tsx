@@ -78,7 +78,7 @@ export default function Evolution({ colour, images }: EvolutionProps) {
           <img className='sm:h-20 h-32 w-fit object-cover' src={img.url} />
           <span className='pb-2 sm:text-base text-xl sm:font-normal font-medium capitalize text-slate-800'>{img.name}</span>
         </div>
-      )) : <div> <span className='capitalize italic'>{images[0]?.name}</span> does not evolve </div>}
+      )) : <div className='sm:text-base text-lg'> <span className='capitalize italic'>{images[0]?.name}</span> does not evolve </div>}
     </div>
   )
 }
