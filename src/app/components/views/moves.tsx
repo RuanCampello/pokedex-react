@@ -84,7 +84,9 @@ export default function Moves({levelUpMoves, machineMoves}: MovesProps) {
     <div className='sm:pb-0 pb-12'>
       <h1 className='sm:text-xl text-2xl font-bold mb-4 pb-1 sm:border-b-2 border-b-4 border-slate-800'>Learned by level</h1>
       {
-        levelUpMovesData.map((move, index) => {
+        levelUpMovesData
+        .sort((a, b) => (a.level_learned_at || 0) - (b.level_learned_at || 0))
+        .map((move, index) => {
           const effectText = move.effect_entries && move.effect_entries[0] && (move.effect_entries[0].effect)
           const replacedEffect = effectText && move.effect_chance ? effectText.replace(/\$effect_chance/g, move.effect_chance.toString()) : effectText
           const flavorText = move.flavor_text_entries && move.flavor_text_entries.find(entry => entry.language.name === 'en')
