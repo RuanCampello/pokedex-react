@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
-import { MoveType } from '../types/moveType'
+import { MoveType, Tm } from '../types/moveType'
 import LevelUpMoves from '../levelUpMoves'
+import MachineMoves from '../machineMoves'
 
 export type Move = {
   move: {
@@ -19,7 +20,6 @@ export type Move = {
     }
   }[]
 }
-
 interface MovesProps {
   levelUpMoves: Move[]
   machineMoves: Move[]
@@ -54,12 +54,13 @@ const damageCategoryImages: { [key: string] : { path: string; colour: string } }
 
 export default function Moves({levelUpMoves, machineMoves}: MovesProps) {
   const [levelUpMovesData, setLevelUpMovesData] = useState<MoveType[]>([])
+  const [machineMovesData, setMachineMovesData] = useState<MoveType[]>([])
 
   const levelMoveUrls = useMemo(() => levelUpMoves.map((move) => move.move.url), [levelUpMoves])
   const machineMoveUrls = useMemo(() => machineMoves.map((move) => move.move.url), [machineMoves])
 
   useEffect(() => {
-    async function fetchData() {
+    async function fetchLevelData() {
       const movePromises = levelMoveUrls.map(async(url) => {
         const response = await fetch(url)
         const moveData: MoveType = await response.json()
@@ -78,8 +79,52 @@ export default function Moves({levelUpMoves, machineMoves}: MovesProps) {
       const movesData = await Promise.all(movePromises)
       setLevelUpMovesData(movesData)
     }
-    fetchData()
+    fetchLevelData()
   }, [levelUpMoves])
+  useEffect(() => {
+    setMachineMovesData([])
+    async function fetchMachineData() {
+      const movePromises = machineMoveUrls.map(async(url) => {
+        const response = await fetch(url)
+        const moveData: MoveType = await response.json()
+
+        if(moveData.name) moveData.name = moveData.name.split('-').join(' ')
+        moveData.effect_entries.forEach((entry) => {
+          entry.effect = entry.effect.replace(/[-:]/g, '')
+        })
+        return moveData
+      })
+      const movesData = await Promise.all(movePromises)
+      // fetch additional data for tmurls
+      const tmPromises = movesData.map(async(move) => {
+        const index = move.machines.length
+        const machine = move.machines[index-1]
+        if(machine && machine.machine) {
+          const tmResponse = await fetch(machine.machine.url)
+          const tmData: Tm = await tmResponse.json()
+          console.log(tmData)        
+          return tmData
+        }
+        return null
+      })
+      const tmsData = await Promise.all(tmPromises)
+      const mergedMovesData = movesData.map((moveData, index) => ({
+        ...moveData,
+        tm: tmsData[index]
+      }))
+      setMachineMovesData(mergedMovesData as MoveType[])
+    }
+    fetchMachineData()
+  }, [machineMoves, machineMoveUrls])
+  
+  function separateTmArray(tm: string) {
+    const match = tm.match(/([a-zA-Z]+)([0-9]+)/)
+    if(match) {
+      const [, tmType, tmNumber] = match
+      return {type: tmType, number: parseInt(tmNumber, 10)}
+    }
+    return null
+  }
   return (
     <div className='sm:pb-0 pb-12'>
       <h1 className='sm:text-xl text-2xl font-bold mb-4 pb-1 sm:border-b-2 border-b-4 border-slate-800'>Learned by level</h1>
@@ -97,6 +142,26 @@ export default function Moves({levelUpMoves, machineMoves}: MovesProps) {
           
           return (
             <LevelUpMoves key={index} typeImage={typeImageUrl.path} text={textToDisplay} damageClass={move.damage_class.name} classImage={damageCategory.path} elementalColour={typeImageUrl.colour} classColour={damageCategory.colour} levelLearned={move.level_learned_at || 0} accuracy={move.accuracy} name={move.name} elementalType={move.type.name}/>
+          )
+        })
+      }
+      <h1 className='sm:text-xl text-2xl font-bold mb-4 pb-1 sm:border-b-2 border-b-4 border-slate-800'>Learned by TM</h1>
+      {
+        machineMovesData.map((move, index) => {
+          const effectText = move.effect_entries && move.effect_entries[0] && (move.effect_entries[0].effect)
+          const replacedEffect = effectText && move.effect_chance ? effectText.replace(/\$effect_chance/g, move.effect_chance.toString()) : effectText
+          const flavorText = move.flavor_text_entries && move.flavor_text_entries.find(entry => entry.language.name === 'en')
+          const textToDisplay = replacedEffect || (flavorText && flavorText.flavor_text) || 'n/a'
+
+          const typeImageUrl = typeImagesAndColours[move.type.name]
+          const damageCategory = damageCategoryImages[move.damage_class.name]
+
+          const machine = separateTmArray(move.tm.item.name)
+          const machineType = machine?.type
+          const machineNumber = machine?.number
+
+          return (
+            <MachineMoves key={index} text={textToDisplay} name={move.name} machineType={machineType || ''} machineNumber={machineNumber || 0} accuracy={move.accuracy} classColour={damageCategory.colour} classImage={damageCategory.path} elementalColour={typeImageUrl.colour} elementalImage={typeImageUrl.path} elementalTitle={move.type.name} classTitle={move.damage_class.name}/>
           )
         })
       }

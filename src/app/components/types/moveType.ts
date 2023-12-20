@@ -18,6 +18,11 @@ export type MoveType = {
       use_before: null
     }
   }
+  machines: {
+    machine: {
+      url: string
+    }
+  }[]
   contest_effect: {
     url: string
   }
@@ -51,4 +56,12 @@ export type MoveType = {
     }
   }[]
   level_learned_at?: number
+  tm: Tm
+}
+export type Tm = {
+  id: number
+  item: {
+    name: string
+    url: string
+  }
 }
