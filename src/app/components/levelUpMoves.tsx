@@ -26,7 +26,7 @@ export default function LevelUpMoves({elementalColour, classColour, classImage, 
         </div>
         <div className={`col-span-2 sm:text-sm items-center text-lg text-slate-700 border-slate-700 border-2 rounded-full sm:w-28 w-32 justify-center flex justify-self-end`}>
           <span className='w-[55px] flex justify-center'>
-            {levelLearned! > 0 ? `Lv.${levelLearned}` : `n/a`}
+            {`Lv.${levelLearned}`}
           </span>
           <div className='sm:h-6 h-7 w-[2px] bg-slate-700'></div>
           <span className='w-[55px] flex justify-center'>

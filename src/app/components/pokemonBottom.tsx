@@ -19,7 +19,7 @@ interface PokemonBottomProps {
   name: string
 }
 interface FlavorText {
-  flavor_text: string;
+  flavor_text: string
   language: {
     name: string
     url: string
@@ -134,11 +134,10 @@ export default function PokemonBottom({colour, name}: PokemonBottomProps) {
 // separate moves based on move_learn_method
   useEffect(() => {
     const levelUpMoves = movesData.filter(move =>
-      move.version_group_details.some(detail => detail.move_learn_method.name === 'level-up')
-    )
+      move.version_group_details.some(detail => detail.move_learn_method.name === 'level-up'))
     const machineMoves = movesData.filter(move =>
-      move.version_group_details.some(detail => detail.move_learn_method.name === 'machine')
-    )
+      move.version_group_details.some(detail => detail.move_learn_method.name === 'machine'))
+
     setLevelUpMoves(levelUpMoves)
     setMachineMoves(machineMoves)
   }, [movesData])

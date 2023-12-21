@@ -67,8 +67,12 @@ export default function Moves({levelUpMoves, machineMoves}: MovesProps) {
 
         const correspondingMove = levelUpMoves.find((move) => move.move.url === url)
         if (correspondingMove) {
-          const levelLearnedInfo = correspondingMove.version_group_details[0]
-          moveData.level_learned_at = levelLearnedInfo.level_learned_at
+          const levelLearnedDetails = correspondingMove.version_group_details
+            .filter((detail) => detail.move_learn_method.name === 'level-up')
+          // get the last version group detail
+          const lastLevelLearnedDetail = levelLearnedDetails[levelLearnedDetails.length - 1]
+          // set level_learned_at based on the level information
+          moveData.level_learned_at = lastLevelLearnedDetail ? lastLevelLearnedDetail.level_learned_at || 1 : 1
         }
         if(moveData.name) moveData.name = moveData.name.split('-').join(' ')
         moveData.effect_entries.forEach((entry) => {
@@ -103,7 +107,6 @@ export default function Moves({levelUpMoves, machineMoves}: MovesProps) {
         if(machineLast && machineLast.machine) {
           const tmResponse = await fetch(machineLast.machine.url)
           let tmData: Tm = await tmResponse.json()
-          console.log(true)
           return tmData
         }
         return null
