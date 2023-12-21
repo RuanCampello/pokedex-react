@@ -16,6 +16,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
+      <head>
+        <link rel="icon" href='@/app/img/favicon.ico' />
+      </head>
       <body className={firaSans.className}>{children}</body>
     </html>
   )
