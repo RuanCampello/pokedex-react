@@ -47,7 +47,7 @@ export default function PokemonTop({colour, name}: PokemonTopProps) {
           <span className='text-end sm:text-sm text-md sm:font-normal'>{englishGenus}</span>
         </div>
       </div>
-      <span className='absolute top-60 font-bold self-start text-2xl text-platinum/70'>{originalName}</span>
+      <span className='font-bold relative my-auto pt-3 self-start text-3xl sm:text-2xl text-platinum/70 z-1'>{originalName}</span>
       {/* <div className='flex justify-between mt-auto'>
         <button onClick={returnPokemon} className='bg-platinum p-2 rounded-full'>
           <CaretLeft color={stringColour} size={18} weight='bold'/>
@@ -59,7 +59,7 @@ export default function PokemonTop({colour, name}: PokemonTopProps) {
       <Image
       width={240}
       height={240}
-      className='absolute self-center sm:h-44 h-60 w-auto sm:top-48 top-32 z-10' 
+      className='self-center absolute sm:h-44 h-60 w-auto sm:top-48 top-32 z-10' 
       alt={`${pokemon?.species.name}'s sprite`} 
       src={imageUrl || ''}
       />

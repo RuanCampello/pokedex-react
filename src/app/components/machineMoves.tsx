@@ -19,7 +19,7 @@ export default function MachineMoves({name, accuracy, machineType, machineNumber
   return (
     <div className='flex flex-col my-2 gap-1 mx-2 sm:mb-4 mb-7'>
       <div className='grid grid-cols-5 items-center'>
-        <span className='col-span-2 capitalize sm:leading-7 sm:text-[17px] text-[22px] font-medium'>{name}</span>
+        <h1 title={name} className='col-span-2 capitalize sm:leading-5 sm:text-[17px] truncate text-[22px] font-medium'>{name}</h1>
         <div className='flex justify-center gap-1'>
           <Badge background={classColour} imageUrl={classImage} title={classTitle}/>
           <Badge background={elementalColour} imageUrl={elementalImage} title={elementalTitle}/>
