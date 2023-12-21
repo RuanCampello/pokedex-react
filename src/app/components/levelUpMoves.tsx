@@ -18,7 +18,7 @@ export default function LevelUpMoves({elementalColour, classColour, classImage, 
     <div className='flex flex-col my-2 gap-1 sm:mb-4 mb-7'>
       <div className='grid grid-cols-5 mx-2 items-center'>
         <div className='col-span-2'>
-          <span className='capitalize sm:text-lg text-[22px] font-medium'>{name}</span>
+          <span className='capitalize sm:leading-7 sm:text-[17px] text-[22px] font-medium'>{name}</span>
         </div>
         <div className='flex gap-1 justify-center'>
           <Badge background={classColour} title={damageClass} imageUrl={classImage} />

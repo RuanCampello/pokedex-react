@@ -97,12 +97,13 @@ export default function Moves({levelUpMoves, machineMoves}: MovesProps) {
       const movesData = await Promise.all(movePromises)
       // fetch additional data for tmurls
       const tmPromises = movesData.map(async(move) => {
-        const index = move.machines.length
-        const machine = move.machines[index-1]
-        if(machine && machine.machine) {
-          const tmResponse = await fetch(machine.machine.url)
-          const tmData: Tm = await tmResponse.json()
-          console.log(tmData)        
+        let index = move.machines.length
+        const machineLast = move.machines[index-1]
+    
+        if(machineLast && machineLast.machine) {
+          const tmResponse = await fetch(machineLast.machine.url)
+          let tmData: Tm = await tmResponse.json()
+          console.log(true)
           return tmData
         }
         return null
@@ -116,9 +117,10 @@ export default function Moves({levelUpMoves, machineMoves}: MovesProps) {
     }
     fetchMachineData()
   }, [machineMoves, machineMoveUrls])
+
   
   function separateTmArray(tm: string) {
-    const match = tm.match(/([a-zA-Z]+)([0-9]+)/)
+    const match = tm?.match(/([a-zA-Z]+)([0-9]+)/)
     if(match) {
       const [, tmType, tmNumber] = match
       return {type: tmType, number: parseInt(tmNumber, 10)}
@@ -151,18 +153,20 @@ export default function Moves({levelUpMoves, machineMoves}: MovesProps) {
           const effectText = move.effect_entries && move.effect_entries[0] && (move.effect_entries[0].short_effect)
           const replacedEffect = effectText && move.effect_chance ? effectText.replace(/\$effect_chance/g, move.effect_chance.toString()) : effectText
           const flavorText = move.flavor_text_entries && move.flavor_text_entries.find(entry => entry.language.name === 'en')
-          const textToDisplay = replacedEffect || (flavorText && flavorText.flavor_text) || 'n/a'
+          const textToDisplay = replacedEffect || (flavorText && flavorText.flavor_text)
 
           const typeImageUrl = typeImagesAndColours[move.type.name]
           const damageCategory = damageCategoryImages[move.damage_class.name]
 
-          const machine = separateTmArray(move.tm.item.name)
+          const machine = separateTmArray(move.tm?.item.name)
           const machineType = machine?.type
           const machineNumber = machine?.number
 
-          return (
-            <MachineMoves key={index} text={textToDisplay} name={move.name} machineType={machineType || ''} machineNumber={machineNumber || 0} accuracy={move.accuracy} classColour={damageCategory.colour} classImage={damageCategory.path} elementalColour={typeImageUrl.colour} elementalImage={typeImageUrl.path} elementalTitle={move.type.name} classTitle={move.damage_class.name}/>
-          )
+          if(textToDisplay) {
+            return (
+              <MachineMoves key={index} text={textToDisplay} name={move.name} machineType={machineType || ''} machineNumber={machineNumber || 0} accuracy={move.accuracy} classColour={damageCategory.colour} classImage={damageCategory.path} elementalColour={typeImageUrl.colour} elementalImage={typeImageUrl.path} elementalTitle={move.type.name} classTitle={move.damage_class.name} />
+            )
+          }
         })
       }
     </div>
