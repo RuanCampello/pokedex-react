@@ -20,7 +20,7 @@ export default function Pokemon({name}: PokemonProps) {
 
   return (
     <main className='sm:w-pokedex sm:h-pokedex w-screen h-screen'>
-      <PokemonTop />
+      <PokemonTop name={name} />
       <PokemonBottom />
     </main>
   )
