@@ -75,7 +75,7 @@ export default function Evolution({ colour, images }: EvolutionProps) {
     <div className={`flex justify-between rounded-lg ${hasEvolution ? 'shadow-md' : ''}`}>
       {hasEvolution ? images.map((img, index) => (
         <div style={{borderColor: colour}} key={index} className={`flex flex-col items-center w-full ${index < images.length - 1 ? 'sm:border-r-2 border-r-[3px]' : ''}`}>
-          <img className='sm:h-20 h-32 w-fit object-cover' src={img.url} />
+          <img className='sm:h-20 h-32 w-auto' src={img.url} />
           <span className='pb-2 sm:text-base text-xl sm:font-normal font-medium capitalize text-slate-800'>{img.name}</span>
         </div>
       )) : <div className='sm:text-base text-lg'> <span className='capitalize italic'>{images[0]?.name}</span> does not evolve </div>}

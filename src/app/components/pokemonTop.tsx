@@ -7,27 +7,41 @@ import { japaneseName } from '@/atoms/japaneseName'
 import { genus } from '@/atoms/genus'
 import { pokemonKey } from '@/atoms/pokemonKey'
 import { typeImagesAndColours } from './views/moves'
+import { CaretLeft, CaretRight } from '@phosphor-icons/react'
 
 interface PokemonTopProps {
-  colour: string
   name: string
 }
 
-export default function PokemonTop({colour, name}: PokemonTopProps) {
+export default function PokemonTop({name}: PokemonTopProps) {
   const [pokemon, setPokemon] = useState<Pokemon>()
   const [originalName, setJapaneseName] = useRecoilState(japaneseName)
   const [englishGenus, setEnglishGenus] = useRecoilState(genus)
   const [pokeKey, setPokeKey] = useRecoilState(pokemonKey)
+  const colour = pokemon?.types[0].type.name || 'normal'
 
   useEffect(() => {
     async function getPokemon() {
-      const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${name}`)
-      const data = await response.json()
-      setPokemon(data)
+      try {
+        const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${pokeKey}`);
+        const data = await response.json();
+        setPokemon(data)
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
     }
     getPokemon()
-  }, [name, pokeKey])  
+    
+  }, [pokeKey, name])
+  function handleBack() {
+    setPokeKey(pokeKey-1)
+  }
+  function handlePass() {
+    setPokeKey(pokeKey+1)
+  }
   const imageUrl = pokemon?.sprites.versions['generation-v']['black-white']?.animated?.front_default || pokemon?.sprites.front_default
+  console.log(imageUrl);
+  
   const stringColour = typeImagesAndColours[colour] || typeImagesAndColours['normal']
   return (
     <div className={`sm:rounded-t-2xl p-8 pb-3 h-1/3 flex flex-col selection:text-slate-700 selection:bg-platinum`} style={{background: stringColour.colour}}>
@@ -47,15 +61,15 @@ export default function PokemonTop({colour, name}: PokemonTopProps) {
           <span className='text-end sm:text-sm text-md sm:font-normal'>{englishGenus}</span>
         </div>
       </div>
-      <span className='font-bold relative my-auto pt-3 self-start text-3xl sm:text-2xl text-platinum/70 z-1'>{originalName}</span>
-      {/* <div className='flex justify-between mt-auto'>
-        <button onClick={returnPokemon} className='bg-platinum p-2 rounded-full'>
-          <CaretLeft color={stringColour} size={18} weight='bold'/>
+      <span className='font-bold relative my-auto self-start text-3xl sm:text-2xl text-platinum/70 z-1'>{originalName}</span>
+      <div className='flex justify-between'>
+        <button disabled={pokeKey === 1} onClick={handleBack} className={`${pokeKey !== 1 ? 'bg-platinum' : 'bg-platinum/70'} p-2 rounded-full`}>
+          <CaretLeft color={stringColour.colour} className='w-auto h-8 sm:h-4' weight='bold'/>
         </button>
-        <button onClick={passPokemon} className='bg-platinum p-2 rounded-full'>
-          <CaretRight color={stringColour} size={18} weight='bold'/>
+        <button onClick={handlePass} className='bg-platinum p-2 rounded-full'>
+          <CaretRight color={stringColour.colour} className='w-auto h-8 sm:h-4' weight='bold'/>
         </button>
-      </div> */}
+      </div>
       <Image
       width={240}
       height={240}

@@ -1,21 +1,21 @@
 import { useState } from 'react'
 import Pokemon from './pokemon'
 import { useRecoilState, RecoilRoot } from 'recoil'
-import { pokemonKey } from '@/atoms/pokemonKey'
+import { pokemonName } from '@/atoms/pokemonName'
 import { MagnifyingGlass } from '@phosphor-icons/react'
 
-export default function Pokedex() {
-  const [key, setPokemonKey] = useRecoilState(pokemonKey) 
+export default function Pokedex() { 
+  const [name, setName] = useRecoilState(pokemonName)
   const [query, setQuery] = useState(String)
   function handleSubmit(e: any) {
     e.preventDefault()
-    setPokemonKey(query.toLowerCase().trim())
-    setQuery('')
+    setName(query.toLowerCase().trim())
+    setQuery('')    
   }
   return (
   <RecoilRoot>
     <div className='space-y-4 sm:w-pokedex w-screen'>
-      <Pokemon name={key}/>
+      <Pokemon name={name}/>
       <form onSubmit={handleSubmit} className='flex sm:relative absolute sm:px-0 px-20 w-full bottom-2' >
         <input 
           onChange={e => setQuery(e.target.value)}

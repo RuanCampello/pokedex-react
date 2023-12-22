@@ -131,7 +131,7 @@ export default function Moves({levelUpMoves, machineMoves}: MovesProps) {
     return null
   }
   return (
-    <div className='sm:pb-0 pb-12'>
+    <div className='sm:pb-0 pb-24'>
       <h1 className='sm:text-xl text-2xl font-bold mb-4 pb-1 sm:border-b-2 border-b-4 border-slate-800'>Learned by level</h1>
       {
         levelUpMovesData
@@ -152,7 +152,17 @@ export default function Moves({levelUpMoves, machineMoves}: MovesProps) {
       }
       <h1 className='sm:text-xl text-2xl font-bold mb-4 pb-1 sm:border-b-2 border-b-4 border-slate-800'>Learned by TM</h1>
       {
-        machineMovesData.map((move, index) => {
+        machineMovesData
+        .slice()
+        .sort((a, b) => {
+          const machineA = separateTmArray(a.tm?.item.name)
+          const machineB = separateTmArray(b.tm?.item.name)
+
+          const typeComparison = (machineA?.type || '').localeCompare(machineB?.type || '')
+          if (typeComparison !== 0)return typeComparison
+          return (machineA?.number || 0) - (machineB?.number || 0)
+        })
+        .map((move, index) => {
           const effectText = move.effect_entries && move.effect_entries[0] && (move.effect_entries[0].short_effect)
           const replacedEffect = effectText && move.effect_chance ? effectText.replace(/\$effect_chance/g, move.effect_chance.toString()) : effectText
           const flavorText = move.flavor_text_entries && move.flavor_text_entries.find(entry => entry.language.name === 'en')

@@ -10,12 +10,15 @@
   },
   "dependencies": {
     "@phosphor-icons/react": "^2.0.15",
+    "@reduxjs/toolkit": "^2.0.1",
     "framer-motion": "^10.16.12",
     "next": "14.0.3",
     "react": "^18",
     "react-dom": "^18",
     "react-loading-skeleton": "^3.3.1",
-    "recoil": "^0.7.7"
+    "react-redux": "^9.0.4",
+    "recoil": "^0.7.7",
+    "redux": "^5.0.0"
   },
   "devDependencies": {
     "@svgr/webpack": "^8.1.0",
