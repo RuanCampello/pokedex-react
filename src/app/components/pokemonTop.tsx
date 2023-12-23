@@ -10,10 +10,6 @@ import { typeImagesAndColours } from './views/moves'
 import { CaretLeft, CaretRight } from '@phosphor-icons/react'
 import { pokemonName } from '@/atoms/pokemonName'
 
-interface PokemonTopProps {
-  name: string
-}
-
 export default function PokemonTop() {
   const [pokemon, setPokemon] = useState<Pokemon>()
   const [originalName, setJapaneseName] = useRecoilState(japaneseName)
@@ -24,25 +20,20 @@ export default function PokemonTop() {
 
   useEffect(() => {
     async function getPokemon() {
-      try {
-        const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${pokeKey}`)
-        const data = await response.json()
-        setPokemon(data)
-      } catch (error) {
-        console.error('Error fetching data:', error)
-      }
+      const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${pokeKey}`)
+      const data = await response.json()
+      setPokemon(data)
     }
     getPokemon()
-    
   }, [pokeKey, name])
+
   function handleBack() {
     setPokeKey(pokeKey-1)
   }
   function handlePass() {
     setPokeKey(pokeKey+1)
   }
-  const imageUrl = pokemon?.sprites.versions['generation-v']['black-white']?.animated?.front_default || pokemon?.sprites.front_default
-  console.log(imageUrl);
+  const imageUrl = pokemon?.sprites.versions['generation-v']['black-white']?.animated?.front_default || pokemon?.sprites.front_default || ''
   
   const stringColour = typeImagesAndColours[colour] || typeImagesAndColours['normal']
   return (
@@ -77,7 +68,7 @@ export default function PokemonTop() {
       height={240}
       className='self-center absolute sm:h-44 h-60 w-auto sm:top-48 top-32 z-10' 
       alt={`${pokemon?.species.name}'s sprite`} 
-      src={imageUrl || ''}
+      src={imageUrl}
       />
     </div>
   )

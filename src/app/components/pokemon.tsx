@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import PokemonTop from './pokemonTop'
 import PokemonBottom from './pokemonBottom'
 import { useRecoilState } from 'recoil'
@@ -8,15 +8,20 @@ interface PokemonProps {
 }
 export default function Pokemon({name}: PokemonProps) {
   const [key, setKey] = useRecoilState(pokemonKey)
+  const [status, setStatus] = useState(Number)
   useEffect(() => {
     async function getPokemon() {
-      const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${name}`)
-      console.log(name)
-      const data = await response.json()
-      setKey(data.id)
+      try {
+        const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${name}`)
+        setStatus(response.status)
+        const data = await response.json()
+        setKey(data.id)
+      } catch (error) {
+        if(status === 404) console.error(`pokemon (${name}) not found: ${error}`)
+      }
     }
     getPokemon()
-  }, [name])
+  }, [name, status])
 
   return (
     <main className='sm:w-pokedex sm:h-pokedex w-screen h-screen'>
