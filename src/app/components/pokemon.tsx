@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import PokemonTop from './pokemonTop'
 import PokemonBottom from './pokemonBottom'
 import { useRecoilState } from 'recoil'
@@ -20,7 +20,7 @@ export default function Pokemon({name}: PokemonProps) {
 
   return (
     <main className='sm:w-pokedex sm:h-pokedex w-screen h-screen'>
-      <PokemonTop name={name} />
+      <PokemonTop />
       <PokemonBottom />
     </main>
   )

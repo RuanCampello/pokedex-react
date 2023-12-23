@@ -8,26 +8,28 @@ import { genus } from '@/atoms/genus'
 import { pokemonKey } from '@/atoms/pokemonKey'
 import { typeImagesAndColours } from './views/moves'
 import { CaretLeft, CaretRight } from '@phosphor-icons/react'
+import { pokemonName } from '@/atoms/pokemonName'
 
 interface PokemonTopProps {
   name: string
 }
 
-export default function PokemonTop({name}: PokemonTopProps) {
+export default function PokemonTop() {
   const [pokemon, setPokemon] = useState<Pokemon>()
   const [originalName, setJapaneseName] = useRecoilState(japaneseName)
   const [englishGenus, setEnglishGenus] = useRecoilState(genus)
   const [pokeKey, setPokeKey] = useRecoilState(pokemonKey)
+  const [name, setName] = useRecoilState(pokemonName)
   const colour = pokemon?.types[0].type.name || 'normal'
 
   useEffect(() => {
     async function getPokemon() {
       try {
-        const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${pokeKey}`);
-        const data = await response.json();
+        const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${pokeKey}`)
+        const data = await response.json()
         setPokemon(data)
       } catch (error) {
-        console.error('Error fetching data:', error);
+        console.error('Error fetching data:', error)
       }
     }
     getPokemon()
